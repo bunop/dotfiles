@@ -1,0 +1,28 @@
+[color]
+	ui = true
+[credential]
+	helper = cache
+[format]
+	pretty = %h - %an, %ar : %s
+[merge]
+	tool = vimdiff
+[user]
+	name = Paolo Cozzi
+	email = paolo.cozzi@ptp.it
+[alias]
+	mytree = log --graph --pretty=format:'%C(yellow)%h%Creset%C(red)%d%Creset %C(white bold)%s%Creset %C(white dim)(by %an %ar)%Creset' --all 
+	# http://stackoverflow.com/questions/1753070/git-ignore-files-only-locally
+	ignore = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
+	ignored = !git ls-files -v | grep "^[[:lower:]]"
+	# https://coderwall.com/p/n1d-na/excluding-files-from-git-locally
+	exclude = !sh -c 'echo "$1" >> .git/info/exclude' -
+
+[push]
+	default = simple
+[status]
+	submoduleSummary = true
+[diff]
+	submodule = log
+[fetch]
+	recurseSubmodules = on-demand
