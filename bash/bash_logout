@@ -11,7 +11,7 @@ MAX_BACKUP=15
 
 # Cancella il file .bash_history.10 se c'è
 if [ -e ~/.bash_history.$MAX_BACKUP ]
- then rm ~/.bash_history.$MAX_BACKUP
+ then rm -f ~/.bash_history.$MAX_BACKUP
 fi
 
 #Ìl file bash_history.1 viene rinominato in bash_history.2 e così via
