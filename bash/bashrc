@@ -22,7 +22,7 @@ shopt -s cmdhist
 HISTFILESIZE=5000
 HISTSIZE=5000
 #HISTTIMEFORMAT='%F %T '
-HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*"
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*"
 
 # Enable auto-complete function fully
 complete -cf sudo
