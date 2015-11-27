@@ -1,0 +1,15 @@
+language-docker
+language-latex
+language-autohotkey
+language-asciidoc
+language-powershell
+visual-studio-dark-syntax
+VisualStudio
+unity-ui
+pretty-json
+color-picker
+latex
+asciidoc-preview
+autocomplete-plus
+omnisharp-atom
+ionide-paket 
