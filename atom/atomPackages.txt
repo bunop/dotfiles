@@ -1,0 +1,12 @@
+language-docker
+language-awk
+language-tmux
+language-dots
+language-latex
+pretty-json
+autocomplete-python
+rst-preview
+merge-conflicts
+language-nginx
+language-sql-mysql
+language-generic-config

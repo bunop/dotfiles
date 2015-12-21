@@ -63,3 +63,6 @@ function dgetnetwork() {
 function dgetvolumes() {
     docker inspect -f '{{ index .Volumes "/host/path" }}' $1
 }
+
+# BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
+alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
