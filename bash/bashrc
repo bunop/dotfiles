@@ -22,7 +22,7 @@ shopt -s cmdhist
 HISTFILESIZE=5000
 HISTSIZE=5000
 #HISTTIMEFORMAT='%F %T '
-HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*"
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dps*:drm*"
 
 # Enable auto-complete function fully
 complete -cf sudo
@@ -142,7 +142,7 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -l'
+alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
 
