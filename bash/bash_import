@@ -1,0 +1,213 @@
+# Place here all custom instructions for your shell
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# don't overwrite GNU Midnight Commander's setting of `ignorespace'.
+# HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoreboth:erasedups
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# Scrive in una riga un comando passato in più righe
+shopt -s cmdhist
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTFILESIZE=10000
+HISTSIZE=10000
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:qstat*:history*:jobs*:rm*ht:hd*:drm*"
+
+# Enable auto-complete function fully
+complete -cf sudo
+complete -cf man
+
+# Sempre per gestire meglio la history
+# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
+# remove duplicates while preserving input order
+function dedup {
+   #awk '! x[$0]++' $@
+   tac $@ | awk '! x[$0]++' | tac
+}
+
+# removes $HISTIGNORE commands from input
+function remove_histignore {
+   if [ -n "$HISTIGNORE" ]; then
+      # replace : with |, then * with .*
+      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
+      # negated grep removes matches
+      grep -vx "$IGNORE_PAT" $@
+   else
+      cat $@
+   fi
+}
+
+# clean up the history file by remove duplicates and commands matching
+# $HISTIGNORE entries
+function history_cleanup {
+   local HISTFILE_SRC=~/.bash_history
+   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
+   if [ -f $HISTFILE_SRC ]; then
+      \cp -a $HISTFILE_SRC $HISTFILE_SRC.backup
+      #Via gli spazi alla fine del file
+      sed -i "s/ *$//" $HISTFILE_SRC
+      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
+      \mv $HISTFILE_DST $HISTFILE_SRC
+      chmod go-r $HISTFILE_SRC
+      #Svuota l'elenco della cronologia eliminando tutti gli elementi
+      #history -c
+      #Legge il contenuto del file di cronologia e lo usa come cronologia corrente
+      #history -r #non serve, quando finisce questo script il file viene letto
+   fi
+}
+
+# Eseguo la pulizia della bash history (prima che venga caricato dalla bash)
+# Ma solo per le shell interattive (quindi non gestisco qsub)
+case "$-" in
+    *i*) history_cleanup
+esac
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+#La mia cartalla HOME sullo storage
+export STORAGE_HOME="/storage/cozzip"
+export PROGRAMMI="$STORAGE_HOME/Programmi"
+export SOFTWARE="/storage/software"
+
+#Esporto il PATH per i miei eseguibili nel mio storage
+export PATH="$SOFTWARE/git/bin/:$SOFTWARE/mpich/bin:$PROGRAMMI/MUMmer3.23:$STORAGE_HOME/bin:$SOFTWARE/maker-2.28/bin:$SOFTWARE/maker-2.28/exe/augustus/bin:$SOFTWARE/maker-2.28/exe/augustus/scripts:$SOFTWARE/maker-2.28/exe/exonerate/bin:$PROGRAMMI/RepeatScout-1:$PROGRAMMI/nseg:$PROGRAMMI/fasta-35.4.12/bin:$STORAGE_HOME/bin/x86_64:$PROGRAMMI/gmap/bin:$PROGRAMMI/R-3.0.2-compiled/bin:$PROGRAMMI/apache-maven-3.1.1/bin:$PATH"
+
+#Questo è invece il percorso di default per il python
+export PYENV_ROOT="$STORAGE_HOME/pyenv"
+export PATH="$STORAGE_HOME/pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+
+#Provo a esportare un percorso dove metto le mie librerie
+export LD_LIBRARY_PATH="$SOFTWARE/mpich/lib:$STORAGE_HOME/lib:$PROGRAMMI/freetype/lib:$LD_LIBRARY_PATH"
+export LD_RUN_PATH="$SOFTWARE/mpich/lib:$STORAGE_HOME/lib:$PROGRAMMI/freetype/lib:$LD_RUN_PATH"
+
+#Questa istruzione dovrebbe caricare le mie storie del perl
+eval $(perl -I$STORAGE_HOME/perlenv/lib/perl5 -Mlocal::lib=$STORAGE_HOME/perlenv)
+
+# Questa invece disattiva l'istruzione precedente e resetta le librerie locali a 0
+# da lanciare se vuoi utilizzare l'ambiente perlbrew
+#~ eval $(perl -Mlocal::lib=--deactivate-all)
+
+# Il percorso di perlbrew
+export PERLBREW_HOME=/storage/cozzip/perlbrew
+export PERLBREW_ROOT=/storage/cozzip/perlbrew
+source /storage/cozzip/perlbrew/etc/bashrc
+
+#Per far funzionare MAKER
+export ZOE="$SOFTWARE/maker-2.28/exe/snap/Zoe"
+export AUGUSTUS_CONFIG_PATH="$SOFTWARE/maker-2.28/exe/augustus/config"
+export PASAHOME="$PROGRAMMI/PASA_r20130907"
+
+#per far funzionare RATT
+export RATT_HOME="$PROGRAMMI/ratt"
+
+#Per installare ruby con RVM
+export rvm_path="$STORAGE_HOME/rvm"
+source $rvm_path/scripts/rvm
+
+# Storie utili per LESS
+export PAGER=less
+#Questo cambia il comportamento di vimdiff (Xgit)
+#export LESS="-iMSx4 -FX"
+alias less="less -iMSx4 -FX"
+
+# Una funzione per chiamare il .bash logout anche per una shell non-login
+trap_exit() {
+    #Se è una login shell, torno 1 e non eseguo questa condizione. Altrimenti eseguo.
+    if ! eval shopt -q login_shell ; then
+        . "$HOME/.bash_logout"
+    fi
+}
+
+# Lancio il trap solo se la shell è interattiva
+case "$-" in *i*)
+    trap trap_exit EXIT
+    #The suspend and resume feature is not needed in most modern terminals,
+    #and we can turn it off without any problem by typing:
+    stty -ixon
+esac
+
+# Place here all custom instructions for your shell
