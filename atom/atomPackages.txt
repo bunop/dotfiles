@@ -11,3 +11,4 @@ language-nginx
 language-sql-mysql
 language-generic-config
 language-pig
+language-cql
