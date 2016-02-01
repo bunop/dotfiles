@@ -186,7 +186,7 @@ esac
 
 # Set pyspark-cassandra
 export PYSPARK_CASSANDRA=/home/ec2-user/capstone/pyspark-cassandra/target
-export PYSPARK_SUBMIT_ARGS="--jars ${PYSPARK_CASSANDRA}/scala-2.10/pyspark-cassandra-assembly-0.2.5.jar  \
-    --driver-class-path ${PYSPARK_CASSANDRA}/scala-2.10/pyspark-cassandra-assembly-0.2.5.jar  \
-    --py-files ${PYSPARK_CASSANDRA}/pyspark_cassandra-0.2.5-py2.7.egg \
+export PYSPARK_SUBMIT_ARGS="--jars ${PYSPARK_CASSANDRA}/pyspark_cassandra-0.1.5.jar  \
+    --driver-class-path ${PYSPARK_CASSANDRA}/pyspark_cassandra-0.1.5.jar  \
+    --py-files ${PYSPARK_CASSANDRA}/pyspark_cassandra-0.1.5-py2.7.egg \
     --conf spark.cassandra.connection.host=node19 pyspark-shell"
