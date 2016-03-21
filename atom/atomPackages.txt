@@ -10,3 +10,4 @@ merge-conflicts
 language-nginx
 language-sql-mysql
 language-generic-config
+language-pig
