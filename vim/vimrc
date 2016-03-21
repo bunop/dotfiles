@@ -37,17 +37,46 @@ endif
 
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
-set showcmd		" Show (partial) command in status line.
-set showmatch		" Show matching brackets.
-set ignorecase		" Do case insensitive matching
-set smartcase		" Do smart case matching
-set incsearch		" Incremental search
-set autowrite		" Automatically save before commands like :next and :make
-set hidden             " Hide buffers when they are abandoned
-set mouse=a		" Enable mouse usage (all modes)
+set autoindent            " Copy indent from current line when starting a new line
+set autowrite             " Automatically save before commands like :next and :make
+set backspace=2           " same as ":set backspace=indent,eol,start"
+set backup                " Make a backup before overwriting a file
+set cindent               " Enables automatic C program indenting
+set cot+=menuone          " A comma separated list of options for Insert mode completion. Use the popup menu also when there is only one match
+set diffopt+=iwhite       " Option settings for diff mode. Ignore changes in amount of white space
+set encoding=utf-8        " Sets the character encoding used inside Vim
+set fileencodings=utf-8   " Sets the character encoding for the file of this buffer
+set hidden                " Hide buffers when they are abandoned
+set hlsearch              " When there is a previous search pattern, highlight all its matches
+set ignorecase            " Do case insensitive matching
+set incsearch             " Incremental search
+set iskeyword+=:          " Keywords are used in searching and recognizing with many commands
+set laststatus=2          " The value of this option influences when the last window will have a status line: always
+set linebreak             " Break lines at word (requires Wrap lines)
+" set mouse=a             " Enable mouse usage (all modes)
+" set mousemodel=extend   " Right mouse button extends a selection.  This works like in an xterm
+set nocompatible          " Not compatible with VI
+set noerrorbells          " Ring the bell (beep or screen flash) for error messages
+set novisualbell          " Use visual bell instead of beeping
+set nrformats+=alpha      " This defines what bases Vim will consider for numbers. Single alphabetical characters will be incremented or decremented
+set number                " Show line numbers
+set ruler                 " Show the line and column number of the cursor position
+set shiftwidth=4          " Number of spaces to use for each step of (auto)indent
+set showbreak=+++         " Wrap-broken line prefix
+set showcmd               " Show (partial) command in status line.
+set showmatch             " Show matching brackets.
+set showmode ruler        " If in Insert, Replace or Visual mode put a message on the last line
+set smartcase             " Do smart case matching
+set smartindent           " Do smart autoindenting when starting a new line
+set smarttab              " When on, a <Tab> in front of a line inserts blanks according to
+set spell                 " When on spell checking will be done
+set spelllang=en_gb       " When the 'spell' option is on spellchecking will be done for these languages
+set termencoding=utf-8    " Encoding used for the terminal
+set ts=4                  " Number of spaces that a <Tab> in the file counts for
+set wildmenu              " When 'wildmenu' is on, command-line completion operates in an enhanced mode
+set wildmode=longest:full " Completion mode that is used for the character specified with 'wildchar'. Like "longest", but also start 'wildmenu' if it is enabled
 
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
-
