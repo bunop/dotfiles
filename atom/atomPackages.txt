@@ -10,3 +10,7 @@ merge-conflicts
 language-nginx
 language-sql-mysql
 language-generic-config
+language-pig
+language-cql
+atom-bootstrap3
+color-picker
