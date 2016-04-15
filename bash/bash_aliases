@@ -1,8 +1,5 @@
 # ~/.bash_aliases: executed to load aliases from .bashrc
 
-# per i download di youtube
-alias youtube-dl='youtube-dl -f 18'
-
 ## Show hidden files only##
 alias l.='ls -d .* --color=auto'
 
@@ -63,6 +60,3 @@ function dgetnetwork() {
 function dgetvolumes() {
     docker inspect -f '{{ index .Volumes "/host/path" }}' $1
 }
-
-# BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
-alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
