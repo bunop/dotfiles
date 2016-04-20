@@ -12,7 +12,9 @@ alias hd="history -d"
 alias jobs='jobs -l'
 
 #prompt if deleting more than 3 files at a time #
-alias rm='rm -I'
+#alias rm='rm -I'
+#alias rm="$HOME/bin/safe_rm"
+alias rm='$HOME/bin/safe-rm -I'
 
 # confirmation #
 alias mv='mv -i'

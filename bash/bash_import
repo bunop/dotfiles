@@ -15,7 +15,7 @@ shopt -s cmdhist
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTFILESIZE=10000
 HISTSIZE=10000
-HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:qstat*:history*:jobs*:rm*ht:hd*:drm*"
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:qstat*:history*:jobs*:rm*:ht:hd*:drm*:dps:dpsa"
 
 # Enable auto-complete function fully
 complete -cf sudo
