@@ -58,12 +58,20 @@ function da () {
     docker start $1 && docker attach $1
 }
 
+# Dump della network di docker
 function dgetnetwork() {
     docker inspect -f '{{ json .NetworkSettings }}' $1 | python -mjson.tool
 }
 
+# dump dell'ip address del container docker
+function dgetipaddress() {
+    docker inspect --format="{{.NetworkSettings.IPAddress}}" $1
+}
+
+# getta i volumi (updated 1.8.1)
+# http://stackoverflow.com/questions/30133664/how-do-you-list-volumes-in-docker-containers
 function dgetvolumes() {
-    docker inspect -f '{{ index .Volumes "/host/path" }}' $1
+    ddocker inspect -f '{{ (index .Mounts 0).Source }}' $1
 }
 
 # BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
