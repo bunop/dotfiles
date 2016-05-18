@@ -1,0 +1,28 @@
+# .screenrc
+#~ hardstatus on
+#~ hardstatus alwayslastline
+startup_message off
+msgwait 1
+
+encoding UTF-8
+attrcolor b ".I"
+
+screen -t bash          0
+
+#caption always "%{.0w} %= %{.0w}%D %d/%m %{.0w}%c "
+#caption always "%{= kc}%H (system load: %l)%-21=%{= .m}%D %d.%m.%Y %0c"
+#caption always "%{= kc}%H (system load: %l)%-21=%{= .m}%D %d.%m.%Y %0c"
+
+#hardstatus string "%{= kG}%-w%{.Gk}%n %t%{-}%+w %=%{+b ..d}|%{-b .km} %l "
+hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%101`%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
+hardstatus on
+hardstatus alwayslastline
+
+defscrollback 65000
+bindkey "\033[1;5C" next
+bindkey "\033[1;5D" prev
+bindkey ^l next
+bindkey ^h prev
+
+#colors
+#term screen-256color
