@@ -76,3 +76,9 @@ function dgetvolumes() {
 
 # BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
 alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
+
+# http://superuser.com/questions/82408/sqlite-with-readline-support-on-ubuntu
+# SQLite3 in debian is compiled without readline support "ldd $(which sqlite3)"
+# You should recompile sqlite or use:
+alias sqlite3="rlwrap sqlite3"
+
