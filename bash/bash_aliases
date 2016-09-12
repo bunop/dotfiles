@@ -60,13 +60,33 @@ function da () {
     docker start $1 && docker attach $1
 }
 
+# Dump della network di docker
 function dgetnetwork() {
     docker inspect -f '{{ json .NetworkSettings }}' $1 | python -mjson.tool
 }
 
+# dump dell'ip address del container docker
+function dgetipaddress() {
+    docker inspect --format="{{.NetworkSettings.IPAddress}}" $1
+}
+
+# getta i volumi (updated 1.8.1)
+# http://stackoverflow.com/questions/30133664/how-do-you-list-volumes-in-docker-containers
 function dgetvolumes() {
-    docker inspect -f '{{ index .Volumes "/host/path" }}' $1
+    ddocker inspect -f '{{ (index .Mounts 0).Source }}' $1
+}
+
+# ripulisce i container stopped e le immagini non utilizzate
+# http://stackoverflow.com/questions/32723111/how-to-remove-old-and-unused-docker-images
+dcleanup(){
+    docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+    docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
 
 # BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
 alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
+
+# http://superuser.com/questions/82408/sqlite-with-readline-support-on-ubuntu
+# SQLite3 in debian is compiled without readline support "ldd $(which sqlite3)"
+# You should recompile sqlite or use:
+alias sqlite3="rlwrap sqlite3"

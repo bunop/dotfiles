@@ -14,3 +14,4 @@ language-pig
 language-cql
 atom-bootstrap3
 color-picker
+language-r
