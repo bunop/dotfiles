@@ -153,7 +153,7 @@ export PROGRAMMI="$STORAGE_HOME/Programmi"
 export SOFTWARE="/storage/software"
 
 #Esporto il PATH per i miei eseguibili nel mio storage
-export PATH="$SOFTWARE/git/bin/:$SOFTWARE/mpich/bin:$PROGRAMMI/MUMmer3.23:$STORAGE_HOME/bin:$SOFTWARE/maker-2.28/bin:$SOFTWARE/maker-2.28/exe/augustus/bin:$SOFTWARE/maker-2.28/exe/augustus/scripts:$SOFTWARE/maker-2.28/exe/exonerate/bin:$PROGRAMMI/RepeatScout-1:$PROGRAMMI/nseg:$PROGRAMMI/fasta-35.4.12/bin:$STORAGE_HOME/bin/x86_64:$PROGRAMMI/gmap/bin:$PROGRAMMI/R-3.0.2-compiled/bin:$PROGRAMMI/apache-maven-3.1.1/bin:$PATH"
+export PATH="$SOFTWARE/git/bin/:$STORAGE_HOME/bin:$PATH"
 
 #Provo a esportare un percorso dove metto le mie librerie
 export LD_LIBRARY_PATH="$SOFTWARE/mpich/lib:$STORAGE_HOME/lib:$PROGRAMMI/freetype/lib:$LD_LIBRARY_PATH"
