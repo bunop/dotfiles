@@ -1,7 +1,7 @@
 # ~/.bash_aliases: executed to load aliases from .bashrc
 
-# per i download di youtube
-alias youtube-dl='youtube-dl -f 18'
+# alias per passwd
+alias passwd='yppasswd'
 
 ## Show hidden files only##
 alias l.='ls -d .* --color=auto'
@@ -13,7 +13,8 @@ alias jobs='jobs -l'
 
 #prompt if deleting more than 3 files at a time #
 #alias rm='rm -I'
-#alias rm="$HOME/bin/safe_rm"
+
+# using shell-safe-rm
 alias rm='$HOME/bin/safe-rm -I'
 
 # confirmation #
@@ -47,41 +48,6 @@ alias wget='wget -c'
 ## set some other defaults ##
 alias df='df -h'
 alias du='du -ch'
-
-## Useful alias for docker: http://nathanleclaire.com/blog/2014/07/12/10-docker-tips-and-tricks-that-will-make-you-sing-a-whale-song-of-joy/
-alias drm="docker rm"
-alias dps="docker ps"
-alias dpsa="docker ps -a"
-alias dpse="docker ps -a | awk 'BEGIN { FS = \"[ ][ ]+\" } {if (\$5 ~ /^Exited/) {print \$0}}'"
-alias dpseid="dpse | cut -f1 --delim=\" \""
-
-# una function per attivare un docker e attaccarsi
-function da () {
-    docker start $1 && docker attach $1
-}
-
-# Dump della network di docker
-function dgetnetwork() {
-    docker inspect -f '{{ json .NetworkSettings }}' $1 | python -mjson.tool
-}
-
-# dump dell'ip address del container docker
-function dgetipaddress() {
-    docker inspect --format="{{.NetworkSettings.IPAddress}}" $1
-}
-
-# getta i volumi (updated 1.8.1)
-# http://stackoverflow.com/questions/30133664/how-do-you-list-volumes-in-docker-containers
-function dgetvolumes() {
-    ddocker inspect -f '{{ (index .Mounts 0).Source }}' $1
-}
-
-# ripulisce i container stopped e le immagini non utilizzate
-# http://stackoverflow.com/questions/32723111/how-to-remove-old-and-unused-docker-images
-dcleanup(){
-    docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-    docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
-}
 
 # BFG Repo Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
 alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
