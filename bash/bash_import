@@ -179,17 +179,18 @@ export SOFTWARE="/storage/software"
 # export PERLBREW_ROOT=/storage/cozzip/perlbrew
 # source /storage/cozzip/perlbrew/etc/bashrc
 
-#Per far funzionare MAKER
+# Per far funzionare MAKER
 # export ZOE="$SOFTWARE/maker-2.28/exe/snap/Zoe"
 # export AUGUSTUS_CONFIG_PATH="$SOFTWARE/maker-2.28/exe/augustus/config"
 # export PASAHOME="$PROGRAMMI/PASA_r20130907"
 
-#per far funzionare RATT
+# per far funzionare RATT
 # export RATT_HOME="$PROGRAMMI/ratt"
 
-#Per installare ruby con RVM
+# Per usare ruby sotto rvm (nota: è necessario eseguire l'rvm script sotto ogni shell
+# anche non di login altrimenti non è possibile andare a cambiare l'ambiente ruby)
 export rvm_path="$STORAGE_HOME/rvm"
-[ $SHLVL -eq 1 ] && source $rvm_path/scripts/rvm
+source $rvm_path/scripts/rvm
 
 # Storie utili per LESS
 export PAGER=less
