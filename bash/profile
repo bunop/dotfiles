@@ -22,11 +22,11 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 # to use per local libs
-PATH="${HOME}/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="${HOME}/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="${HOME}/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"${HOME}/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"; export PERL_MM_OPT;
+# local perl installation (activate only one times per shell)
+[ $SHLVL -eq 1 ] && eval "$(perl -I${HOME}/Softwares/perl5/lib/perl5 -Mlocal::lib=${HOME}/Softwares/perl5)"
+
+# to deactivate local::lib
+# eval $(perl -Mlocal::lib=--deactivate-all)
 
 # Using Pyenv
 # export PYENV_ROOT="${HOME}/Softwares/pyenv"

@@ -5,7 +5,7 @@ language-dots
 language-latex
 pretty-json
 autocomplete-python
-rst-preview
+rst-preview-pandoc
 merge-conflicts
 language-nginx
 language-sql-mysql
