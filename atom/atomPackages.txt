@@ -5,6 +5,7 @@ language-dots
 language-latex
 pretty-json
 autocomplete-python
+language-restructuredtext
 rst-preview-pandoc
 merge-conflicts
 language-nginx
@@ -15,3 +16,5 @@ language-cql
 atom-bootstrap3
 color-picker
 language-r
+linter
+linter-pylint
