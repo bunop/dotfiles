@@ -56,3 +56,6 @@ alias bfg="java -jar $HOME/Softwares/BFG/bfg.jar"
 # SQLite3 in debian is compiled without readline support "ldd $(which sqlite3)"
 # You should recompile sqlite or use:
 alias sqlite3="rlwrap sqlite3"
+
+# using clipper in terminals
+alias xclip="xclip -selection c"
