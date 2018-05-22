@@ -165,7 +165,7 @@ export SOFTWARE="/storage/software"
 # [ $SHLVL -eq 1 ] && eval "$(pyenv init -)"
 
 # Using conda instead of pyenv
-[ $SHLVL -eq 1 ] && export PATH=$PROGRAMMI/anaconda2/bin:$PATH
+[ $SHLVL -eq 1 ] && export PATH=$PROGRAMMI/miniconda3/bin:$PATH
 
 #Questa istruzione dovrebbe caricare le mie storie del perl
 #[ $SHLVL -eq 1 ] && eval $(perl -I$STORAGE_HOME/perlenv/lib/perl5 -Mlocal::lib=$STORAGE_HOME/perlenv)
