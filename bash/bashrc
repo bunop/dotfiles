@@ -22,7 +22,7 @@ shopt -s cmdhist
 HISTFILESIZE=10000
 HISTSIZE=10000
 #HISTTIMEFORMAT='%F %T '
-HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dps*:drm*"
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dkps*:dkrm*"
 
 # Enable auto-complete function fully
 complete -cf sudo
@@ -153,6 +153,11 @@ alias l='ls -CF'
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+
+# https://medium.com/@cjus/handy-docker-aliases-4bd85089a3b8
+if [ -f "$HOME/.docker_aliases" ]; then
+  . "$HOME/.docker_aliases"
 fi
 
 # enable programmable completion features (you don't need to enable
