@@ -10,7 +10,7 @@
 	name = Paolo Cozzi
 	email = bunop@libero.it
 [alias]
-	mytree = log --graph --pretty=format:'%C(yellow)%h%Creset%C(red)%d%Creset %C(white bold)%s%Creset %C(white dim)(by %an %ar)%Creset' --all
+	mytree = log --all --decorate --oneline --graph
 	# http://stackoverflow.com/questions/1753070/git-ignore-files-only-locally
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
