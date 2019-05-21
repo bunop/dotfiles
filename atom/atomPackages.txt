@@ -25,3 +25,4 @@ merge-conflicts
 pretty-json
 rst-preview-pandoc
 split-diff
+sass-autocompile
