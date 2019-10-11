@@ -22,7 +22,7 @@ shopt -s cmdhist
 HISTFILESIZE=10000
 HISTSIZE=10000
 #HISTTIMEFORMAT='%F %T '
-HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dkps*:dkrm*"
+HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dkps*:dkrm*:fuck"
 
 # Enable auto-complete function fully
 complete -cf sudo
@@ -205,3 +205,11 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# added by travis gem
+[ -f /home/paolo/.travis/travis.sh ] && source /home/paolo/.travis/travis.sh
+
+# enabling https://github.com/nvbn/thefuck
+if [ -x "$(command -v thefuck)" ]; then
+    eval "$(thefuck --alias)"
+fi
