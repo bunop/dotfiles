@@ -27,3 +27,6 @@ rst-preview-pandoc
 split-diff
 sass-autocompile
 atom-live-server
+atom-typescript
+angular-snippets
+language-html-angular
