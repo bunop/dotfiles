@@ -171,9 +171,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Alla fine delle varie storie, una cazzata:
-command fortune -a | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
-
 # Una funzione per chiamare il .bash logout anche per una shell non-login
 trap_exit() {
     #Se è una login shell, torno 1 e non eseguo questa condizione. Altrimenti eseguo.
@@ -190,21 +187,6 @@ case "$-" in *i*)
     #and we can turn it off without any problem by typing:
     stty -ixon
 esac
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/paolo/Softwares/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/paolo/Softwares/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/paolo/Softwares/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/paolo/Softwares/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 # added by travis gem
 [ -f /home/paolo/.travis/travis.sh ] && source /home/paolo/.travis/travis.sh
