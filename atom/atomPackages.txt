@@ -30,3 +30,4 @@ atom-live-server
 atom-typescript
 angular-snippets
 language-html-angular
+file-types

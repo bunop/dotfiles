@@ -1,6 +1,22 @@
 "*":
+  core:
+    customFileTypes:
+      "source.ts": [
+        "ts"
+      ]
+    disabledPackages: [
+      "linter"
+    ]
+    telemetryConsent: "no"
+    useTreeSitterParsers: false
+  editor:
+    showIndentGuide: true
+    showInvisibles: true
   "exception-reporting":
-    userId: "cbadee62-7224-250d-98fd-f4e78f58eb30"
+    userId: "c7cdac1d-ab49-4d3e-911b-49de51370399"
+  "file-types":
+    "*.component.html": "text.html.ng"
+  kite:
+    showWelcomeNotificationOnStartup: false
   welcome:
     showOnStartup: false
-  editor: {}
