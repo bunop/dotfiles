@@ -31,3 +31,5 @@ atom-typescript
 angular-snippets
 language-html-angular
 file-types
+kite
+atom-ide-ui

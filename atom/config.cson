@@ -1,4 +1,10 @@
 "*":
+  "atom-ide-ui":
+    "atom-ide-terminal":
+      rendererType: "dom"
+  "atom-typescript":
+    autocompleteParens: true
+    checkAllFilesOnSave: true
   core:
     customFileTypes:
       "source.ts": [
@@ -18,5 +24,6 @@
     "*.component.html": "text.html.ng"
   kite:
     showWelcomeNotificationOnStartup: false
+  "linter-ui-default": {}
   welcome:
     showOnStartup: false
