@@ -1,5 +1,7 @@
 "*":
   "atom-ide-ui":
+    "atom-ide-diagnostics-ui":
+      showDirectoryColumn: true
     "atom-ide-terminal":
       rendererType: "dom"
   "atom-typescript":
@@ -24,6 +26,8 @@
     "*.component.html": "text.html.ng"
   kite:
     showWelcomeNotificationOnStartup: false
-  "linter-ui-default": {}
+  "linter-ui-default":
+    decorateOnTreeView: "Files and Directories"
+    showPanel: true
   welcome:
     showOnStartup: false
