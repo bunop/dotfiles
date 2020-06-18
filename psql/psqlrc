@@ -1,0 +1,166 @@
+
+-- inspired from
+-- https://www.digitalocean.com/community/tutorials/how-to-customize-the-postgresql-prompt-with-psqlrc-on-ubuntu-14-04
+-- https://github.com/e7e6/psqlrc/blob/master/psqlrc
+-- https://bitbucket.org/adamkg/libakg/src/default/dot/psqlrc
+
+-- editing the psqlrc creates outputs when you startup psql. If you want to hide
+-- these set the QUIET flag at the top and bottom of the psql file.
+\set QUIET 1
+
+-- customize the main psql prompt (PROMPT1)
+-- %M refers to the database server’s hostname – is “[local]” if the connection is over a Unix domain socket
+-- %> refers to the listening port
+-- %n refers to the session username
+-- %/ refers the current database
+-- %R refers to whether you’re in single-line mode (^) or disconnected (!) but is normally =
+-- %# refers to whether you’re a superuser (#) or a regular user (>)
+-- %x refers to the transaction status – usually blank unless in a transaction block (*)
+\set PROMPT1 '%M:%[%033[1;31m%]%>%[%033[0m%] %n@%/%R%#%x '
+
+-- You'll run into the secondary prompt when you have an unfinished query.
+-- Editing the secondary psql prompt is mostly similar to editing the primary psql prompt.
+\set PROMPT2 '%M %n@%/%R %# '
+
+-- When querying a PostgreSQL database null values return a blank. If instead you
+-- want it to return the value NULL you can edit the null option.
+\pset null 'NULL'
+
+-- To complete SQL keywords such as “SELECT” and “FROM” as either uppercase or lowercase,
+-- you can set the COMPKEYWORDCASE option with the options upper or lower.
+\set COMP_KEYWORD_CASE upper
+
+-- To have all queries display query times using enable the timing option.
+\timing
+
+-- If this variable is set to ignorespace, lines which begin with a space are not
+-- entered into the history list. If set to a value of ignoredups, lines matching
+-- the previous history line are not entered. A value of ignoreboth combines the
+-- two options. If set to none (the default), all lines read in interactive mode
+-- are saved on the history list.
+\set HISTCONTROL ignoreboth
+
+-- To set the size of the history you can edit HISTSIZE.
+\set HISTSIZE 32767
+
+-- When querying large tables sometimes the output renders text that is difficult
+-- to read. You can switch to expanded table format.
+-- Values: auto, on, off
+\x off
+
+-- You can also set verbosity of error reports with options “default”, “verbose”, or “terse”.
+\set VERBOSITY verbose
+
+-- change the table border
+-- https://pgdash.io/blog/postgres-psql-tips-tricks.html
+\pset linestyle unicode
+\pset border 2
+
+-- create an history files per database and user
+-- https://bitbucket.org/adamkg/libakg/src/default/dot/psqlrc
+\set HISTFILE ~/.psql_history- :DBNAME-:USER
+
+-- columns: target width for wrapped format
+-- Values: number
+\pset columns 0
+
+-- fieldsep: field separator for unaligned output format.
+-- Values: string
+\pset fieldsep '|'
+
+-- fieldsep_zero: set field separator to a zero byte.
+--Values: no value.
+--\pset fieldsep_zero
+
+-- format: output format.
+-- Values: unaligned, aligned, wrapped, html, asciidoc, latex, latex-longtable,
+--         troff-ms
+\pset format aligned
+
+-- numericlocale: display local-specific character to separate digits.
+-- values: on, off. Without values, will toggle.
+\pset numericlocale off
+
+-- override the default environment variables
+-- \setenv PAGER less
+-- \setenv LESS -iMSx4 -FX
+
+-- pager: use of a pager program.
+-- Values: on, off, always, name_of_pager. Without value, will toggle.
+\pset pager on
+
+-- pager_min_lines: is set to greater number than page height, pager will
+-- not be called.
+-- Values: number
+\pset pager_min_lines 0
+
+-- recordsep: line separator in unaligned output format.
+-- Values: string
+\pset recordsep '\n'
+
+-- recordsep_zero: set the line separator in unaligned output format to
+-- zero byte.
+-- Values: no values.
+--\pset recordsep_zero
+
+-- tableattr: attributes in the table tag for HTML format.
+-- Values: string. Without value, will unset attributes.
+--\pset tableattr TODO
+
+-- title: table title for printed tables.
+-- Values: string. Without value, title is unset.
+
+-- tuples_only: can also be abreviated with \t
+-- Values: on, off. Without value, will toggle.
+\pset tuples_only off
+
+-- unicode_border_linestyle: border drawing style for unicode style.
+-- Values: single, double.
+\pset unicode_border_linestyle duoble
+
+-- unicode_column_linestyle: column drawing style for unicode style.
+-- Values: single, double.
+\pset unicode_column_linestyle single
+
+-- unicode_header_linestyle: header drawing style for unicode style.
+-- Values: single, double.
+\pset unicode_header_linestyle single
+
+-- Custom queries examples
+
+-- You can setup shortcuts with the set command as well. If you want to setup a shortcut
+-- for seeing the PostgreSQL version and available extensions add the following:
+\set version 'SELECT version()'
+\set extensions 'select * from pg_available_extensions'
+
+-- number of connected backends
+\set backends 'SELECT datname, numbackends FROM pg_catalog.pg_stat_database;'
+
+-- buffer cache hit ratio
+\set buffer_cache_hit_ratio 'select datname, blks_hit::float/(blks_hit+blks_read) as hit_ratio from pg_stat_database where blks_read+blks_hit <> 0;'
+
+-- kill transactions that have been "idle in transaction" for more than 10 minutes
+\set kill_old_transactions 'select count(pg_terminate_backend(pid)) as nb_killed_proc from pg_stat_activity where query = \'<IDLE> in transaction\' and current_timestamp - query_start > \'10 min\';'
+
+-- running queries
+\set queries  'select current_timestamp - query_start as runtime,pid,datname,usename,query from pg_stat_activity where query != \'<IDLE>\' order by 1 desc; '
+
+-- server uptime
+\set uptime   'select date_trunc(\'second\',current_timestamp - pg_postmaster_start_time()) as uptime;'
+
+-- display results on terminal (for echo commands)
+\set QUIET 0
+
+-- If you want to display messages when starting the psql prompt you can use the echo command.
+\echo '--------------------------------------\n'
+\echo 'Welcome to PostgreSQL!'
+\echo 'Type :version to see the PostgreSQL version.'
+\echo 'Type :extensions to see the available extensions.'
+\echo 'Type \\q to exit. \n'
+\echo 'Other useful custom commands are:'
+\echo '\t' ':backends'
+\echo '\t' ':buffer_cache_hit_ratio'
+\echo '\t' ':kill_old_transactions'
+\echo '\t' ':queries'
+\echo '\t' ':uptime'
+\echo '--------------------------------------\n'

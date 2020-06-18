@@ -17,6 +17,7 @@ language-nginx
 atom-language-r
 language-restructuredtext
 language-sql-mysql
+language-pgsql
 language-tmux
 linter
 linter-pylint

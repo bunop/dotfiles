@@ -82,7 +82,13 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set the default pager for terminal like psql, mysql, ...
+# http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
+# export PAGER=less
+# export LESS="-iMSx4 -FX"
+# export LESS="-iMSx4"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
