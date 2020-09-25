@@ -19,6 +19,7 @@ language-restructuredtext
 language-sql-mysql
 language-pgsql
 language-tmux
+language-terraform
 linter
 linter-pylint
 linter-ui-default

@@ -28,6 +28,11 @@
     showWelcomeNotificationOnStartup: false
   "linter-ui-default":
     decorateOnTreeView: "Files and Directories"
+    panelHeight: 302
     showPanel: true
+  "sass-autocompile":
+    compileOnSave: false
+  "tree-view":
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
