@@ -20,6 +20,8 @@ language-sql-mysql
 language-pgsql
 language-tmux
 language-terraform
+language-singularity
+language-nextflow
 linter
 linter-pylint
 linter-ui-default
