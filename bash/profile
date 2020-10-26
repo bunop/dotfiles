@@ -56,8 +56,8 @@ if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
 fi
 
 # add go to PATH (if installed)
-if [ -d "${HOME}/Softwares/go" ] ; then
-    GOPATH="${HOME}/Softwares/go"
+if [ -d "/opt/go" ] ; then
+    GOPATH="/opt/go"
     PATH="${GOPATH}/bin:${PATH}"
 fi
 
