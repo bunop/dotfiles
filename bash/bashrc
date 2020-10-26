@@ -219,3 +219,8 @@ unset __conda_setup
 if [ -x "$(command -v thefuck)" ]; then
     eval "$(thefuck --alias)"
 fi
+
+# enabling singularity completion
+if [ -f "/opt/singularity/etc/bash_completion.d/singularity" ]; then
+    . /opt/singularity/etc/bash_completion.d/singularity
+fi
