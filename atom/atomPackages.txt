@@ -1,4 +1,4 @@
-atom-bootstrap4
+v-bootstrap4
 atom-django
 autocomplete-python
 busy-signal
@@ -14,10 +14,14 @@ language-dots
 language-generic-config
 language-latex
 language-nginx
-language-r
+atom-language-r
 language-restructuredtext
 language-sql-mysql
+language-pgsql
 language-tmux
+language-terraform
+language-singularity
+language-nextflow
 linter
 linter-pylint
 linter-ui-default
@@ -26,3 +30,10 @@ pretty-json
 rst-preview-pandoc
 split-diff
 sass-autocompile
+atom-live-server
+atom-typescript
+angular-snippets
+language-html-angular
+file-types
+kite
+atom-ide-ui

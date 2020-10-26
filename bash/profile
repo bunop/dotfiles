@@ -23,3 +23,15 @@ mesg n
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+# add go to PATH (if installed)
+if [ -d "/opt/go" ] ; then
+    GOPATH="/opt/go"
+    PATH="${GOPATH}/bin:${PATH}"
+fi
+
+# add singularity to PATH (if installed)
+if [ -d "/opt/singularity" ] ; then
+    SINGULARITYPATH="/opt/singularity"
+    PATH="${SINGULARITYPATH}/bin:${PATH}"
+fi
