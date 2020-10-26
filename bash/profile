@@ -54,3 +54,9 @@ export rvm_path="${HOME}/Softwares/rvm"
 if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
     source "${rvm_path-$HOME/.rvm}/scripts/rvm"
 fi
+
+# add go to path (if installed)
+if [ -d "${HOME}/Softwares/go" ] ; then
+    GOPATH="${HOME}/Softwares/go"
+    PATH="${GOPATH}/bin:${PATH}"
+fi
