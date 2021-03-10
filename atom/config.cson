@@ -13,7 +13,7 @@
         "ts"
       ]
     disabledPackages: [
-      "linter"
+      "atom-ide-ui"
     ]
     telemetryConsent: "no"
     useTreeSitterParsers: false
@@ -29,7 +29,8 @@
   "linter-ui-default":
     decorateOnTreeView: "Files and Directories"
     panelHeight: 302
-    showPanel: true
+  "rst-preview-pandoc":
+    pandocOpts: "-frst -thtml --webtex"
   "sass-autocompile":
     compileOnSave: false
   "tree-view":
