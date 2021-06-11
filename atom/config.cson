@@ -13,7 +13,7 @@
         "ts"
       ]
     disabledPackages: [
-      "atom-ide-ui"
+      "linter"
     ]
     telemetryConsent: "no"
     useTreeSitterParsers: false
