@@ -66,3 +66,5 @@ if [ -d "/opt/singularity" ] ; then
     SINGULARITYPATH="/opt/singularity"
     PATH="${SINGULARITYPATH}/bin:${PATH}"
 fi
+
+export PATH="$HOME/.poetry/bin:$PATH"
