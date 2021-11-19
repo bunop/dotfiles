@@ -67,4 +67,8 @@ if [ -d "/opt/singularity" ] ; then
     PATH="${SINGULARITYPATH}/bin:${PATH}"
 fi
 
+# override nextflow singularity cache dir
+export NXF_SINGULARITY_CACHEDIR="${HOME}/.singularity_cache"
+
+# manage python packages with poetry
 export PATH="$HOME/.poetry/bin:$PATH"
