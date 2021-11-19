@@ -24,71 +24,16 @@ HISTSIZE=10000
 #HISTTIMEFORMAT='%F %T '
 HISTIGNORE="ls:ll:exit:clear:cd:top:htop*:history*:rm*:ht:hd*:dkps*:dkrm*:fuck:trash*:kill*"
 
-# Enable auto-complete function fully
-complete -cf sudo
-complete -cf man
-
-# Sempre per gestire meglio la history
-# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
-# remove duplicates while preserving input order
-function dedup {
-   #awk '! x[$0]++' $@
-   tac $@ | awk '! x[$0]++' | tac
-}
-
-# removes $HISTIGNORE commands from input
-function remove_histignore {
-   if [ -n "$HISTIGNORE" ]; then
-      # replace : with |, then * with .*
-      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
-      # negated grep removes matches
-      grep -vx "$IGNORE_PAT" $@
-   else
-      cat $@
-   fi
-}
-
-# clean up the history file by remove duplicates and commands matching
-# $HISTIGNORE entries
-function history_cleanup {
-   local HISTFILE_SRC=~/.bash_history
-   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
-   if [ -f $HISTFILE_SRC ]; then
-      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
-      #Via gli spazi alla fine del file
-      sed -i "s/ *$//" $HISTFILE_SRC
-      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
-      \mv $HISTFILE_DST $HISTFILE_SRC
-      chmod go-r $HISTFILE_SRC
-      #Svuota l'elenco della cronologia eliminando tutti gli elementi
-      #history -c
-      #Legge il contenuto del file di cronologia e lo usa come cronologia corrente
-      #history -r #non serve, quando finisce questo script il file viene letto
-   fi
-}
-
-# Eseguo la pulizia della bash history (prima che venga caricato dalla bash)
-# Ma solo per le shell interattive (quindi non gestisco qsub)
-case "$-" in
-    *i*) history_cleanup
-esac
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set the default pager for terminal like psql, mysql, ...
-# http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
-# export PAGER=less
-# export LESS="-iMSx4 -FX"
-# export LESS="-iMSx4"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -177,6 +122,62 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Enable auto-complete function fully
+complete -cf sudo
+complete -cf man
+
+# Sempre per gestire meglio la history
+# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
+# remove duplicates while preserving input order
+function dedup {
+   #awk '! x[$0]++' $@
+   tac $@ | awk '! x[$0]++' | tac
+}
+
+# removes $HISTIGNORE commands from input
+function remove_histignore {
+   if [ -n "$HISTIGNORE" ]; then
+      # replace : with |, then * with .*
+      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
+      # negated grep removes matches
+      grep -vx "$IGNORE_PAT" $@
+   else
+      cat $@
+   fi
+}
+
+# clean up the history file by remove duplicates and commands matching
+# $HISTIGNORE entries
+function history_cleanup {
+   local HISTFILE_SRC=~/.bash_history
+   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
+   if [ -f $HISTFILE_SRC ]; then
+      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
+      #Via gli spazi alla fine del file
+      sed -i "s/ *$//" $HISTFILE_SRC
+      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
+      \mv $HISTFILE_DST $HISTFILE_SRC
+      chmod go-r $HISTFILE_SRC
+      #Svuota l'elenco della cronologia eliminando tutti gli elementi
+      #history -c
+      #Legge il contenuto del file di cronologia e lo usa come cronologia corrente
+      #history -r #non serve, quando finisce questo script il file viene letto
+   fi
+}
+
+# Eseguo la pulizia della bash history (prima che venga caricato dalla bash)
+# Ma solo per le shell interattive (quindi non gestisco qsub)
+case "$-" in
+    *i*) history_cleanup
+esac
+
+# set the default pager for terminal like psql, mysql, ...
+# http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
+# export PAGER=less
+# export LESS="-iMSx4 -FX"
+# export LESS="-iMSx4"
+
+
 # Alla fine delle varie storie, una cazzata:
 command fortune -a | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
 
@@ -196,29 +197,6 @@ case "$-" in *i*)
     #and we can turn it off without any problem by typing:
     stty -ixon
 esac
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/paolo/Softwares/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/paolo/Softwares/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/paolo/Softwares/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/paolo/Softwares/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# added by travis gem
-[ -f /home/paolo/.travis/travis.sh ] && source /home/paolo/.travis/travis.sh
-
-# enabling https://github.com/nvbn/thefuck
-if [ -x "$(command -v thefuck)" ]; then
-    eval "$(thefuck --alias)"
-fi
 
 # enabling singularity completion
 if [ -f "/opt/singularity/etc/bash_completion.d/singularity" ]; then
