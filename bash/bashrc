@@ -42,7 +42,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -62,7 +62,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w \$\[\033[00m\] '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -177,10 +177,6 @@ esac
 # export LESS="-iMSx4 -FX"
 # export LESS="-iMSx4"
 
-
-# Alla fine delle varie storie, una cazzata:
-command fortune -a | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
-
 # Una funzione per chiamare il .bash logout anche per una shell non-login
 trap_exit() {
     #Se è una login shell, torno 1 e non eseguo questa condizione. Altrimenti eseguo.
@@ -197,8 +193,3 @@ case "$-" in *i*)
     #and we can turn it off without any problem by typing:
     stty -ixon
 esac
-
-# enabling singularity completion
-if [ -f "/opt/singularity/etc/bash_completion.d/singularity" ]; then
-    . /opt/singularity/etc/bash_completion.d/singularity
-fi
