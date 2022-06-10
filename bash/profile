@@ -46,12 +46,6 @@ if [ -d "/opt/go" ] ; then
     PATH="${GOPATH}/bin:${PATH}"
 fi
 
-# add singularity to PATH (if installed)
-if [ -d "/opt/singularity" ] ; then
-    SINGULARITYPATH="/opt/singularity"
-    PATH="${SINGULARITYPATH}/bin:${PATH}"
-fi
-
 # override nextflow singularity cache dir
 export NXF_SINGULARITY_CACHEDIR="${HOME}/.singularity_cache"
 
