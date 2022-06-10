@@ -12,24 +12,21 @@
       "source.ts": [
         "ts"
       ]
-    disabledPackages: [
-      "linter"
-    ]
+    projectHome: "/home/paolo/Projects"
     telemetryConsent: "no"
     useTreeSitterParsers: false
   editor:
     showIndentGuide: true
     showInvisibles: true
+    softWrap: true
   "exception-reporting":
     userId: "c7cdac1d-ab49-4d3e-911b-49de51370399"
   "file-types":
     "*.component.html": "text.html.ng"
   kite:
     showWelcomeNotificationOnStartup: false
-  "linter-ui-default":
-    decorateOnTreeView: "Files and Directories"
-    panelHeight: 302
-    showPanel: true
+  "rst-preview-pandoc":
+    pandocOpts: "-frst -thtml --webtex"
   "sass-autocompile":
     compileOnSave: false
   "tree-view":

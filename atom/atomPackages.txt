@@ -22,9 +22,6 @@ language-tmux
 language-terraform
 language-singularity
 language-nextflow
-linter
-linter-pylint
-linter-ui-default
 merge-conflicts
 pretty-json
 rst-preview-pandoc

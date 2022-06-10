@@ -174,3 +174,27 @@ dksb() {
 #   redisLabel=`docker ps | grep redis | awk '{print $NF}'`
 #   docker exec -it $redisLabel redis-cli
 # }
+
+# https://forums.docker.com/t/how-can-i-list-tags-for-a-repository/32577/7
+function listTags() {
+  local repo=${1}
+  local size=${2:-25}
+  local page=${3:-1}
+  [ -z "${repo}" ] && echo "Usage: listTags <repoName> [size] [pageIndex]" 1>&2 && return 1
+  curl "https://registry.hub.docker.com/api/content/v1/repositories/public/library/${repo}/tags?page=${page}&page_size=${size}" 2>/dev/null | jq -r '.results[].name' | sort
+}
+
+function dksearchtags() {
+  local repo=${1}
+  local count=$(curl "https://registry.hub.docker.com/api/content/v1/repositories/public/library/${repo}/tags" 2>/dev/null | jq -r '.count')
+  local size=25
+  let totPages=${count}/${size}
+  let reminder=${count}%${size}
+  if (( reminder > 0 )); then
+    ((totPages+=1))
+  fi
+  #echo ${count} ${size} ${totPages} ${reminder}
+  for page in $(seq 1 ${totPages}); do
+    listTags ${repo} ${size} ${page}
+  done
+}
