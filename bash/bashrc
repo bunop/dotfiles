@@ -199,6 +199,6 @@ case "$-" in *i*)
 esac
 
 # enabling singularity completion
-if [ -f "/opt/singularity/etc/bash_completion.d/singularity" ]; then
-    . /opt/singularity/etc/bash_completion.d/singularity
+if [ -f "/usr/local/etc/bash_completion.d/singularity" ]; then
+    . /usr/local/etc/bash_completion.d/singularity
 fi
