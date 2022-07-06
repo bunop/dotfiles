@@ -177,10 +177,6 @@ esac
 # export LESS="-iMSx4 -FX"
 # export LESS="-iMSx4"
 
-
-# Alla fine delle varie storie, una cazzata:
-command fortune -a | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
-
 # Una funzione per chiamare il .bash logout anche per una shell non-login
 trap_exit() {
     #Se è una login shell, torno 1 e non eseguo questa condizione. Altrimenti eseguo.
