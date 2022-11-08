@@ -1,7 +1,11 @@
 [color]
 	ui = true
 [credential]
-	helper = cache
+	helper = cache --timeout=7200
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
 [format]
 	pretty = %h - %an, %ar : %s
 [merge]
