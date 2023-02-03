@@ -33,13 +33,6 @@ fi
 # to deactivate local::lib
 # eval $(perl -Mlocal::lib=--deactivate-all)
 
-# moving RVM to a different location
-export rvm_path="${HOME}/Softwares/rvm"
-
-if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
-    source "${rvm_path-$HOME/.rvm}/scripts/rvm"
-fi
-
 # add go to PATH (if installed)
 if [ -d "/opt/go" ] ; then
     GOPATH="/opt/go"
@@ -48,3 +41,14 @@ fi
 
 # override nextflow singularity cache dir
 export NXF_SINGULARITY_CACHEDIR="${HOME}/.singularity_cache"
+
+# moving RVM to a different location
+export rvm_path="${HOME}/Softwares/rvm"
+
+# this is required in order to rvm work properly in custom folders
+if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
+    source "${rvm_path-$HOME/.rvm}/scripts/rvm"
+fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/Softwares/rvm/bin"
