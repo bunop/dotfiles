@@ -51,4 +51,6 @@ if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
 fi
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/Softwares/rvm/bin"
+if [ -d "${HOME}/Softwares/rvm/bin" ] ; then
+    export PATH="${PATH}:$HOME/Softwares/rvm/bin"
+fi
