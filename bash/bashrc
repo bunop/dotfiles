@@ -198,3 +198,15 @@ esac
 if [ -f "/usr/local/etc/bash_completion.d/singularity" ]; then
     . /usr/local/etc/bash_completion.d/singularity
 fi
+
+# this stuff is required by TURNKEY instances
+run_scripts() {
+    for script in $1/*; do
+        [ -x "$script" ] || continue
+        . $script
+    done
+}
+
+if [ -d "${HOME}/.bashrc.d" ] ; then
+    run_scripts $HOME/.bashrc.d
+fi
