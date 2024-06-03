@@ -199,6 +199,11 @@ if [ -f "/usr/local/etc/bash_completion.d/singularity" ]; then
     . /usr/local/etc/bash_completion.d/singularity
 fi
 
+# enabling poetry completion
+if [ -f "${HOME}/.poetry_completion" ]; then
+    . "${HOME}/.poetry_completion"
+fi
+
 # Use the following command to don't activate the default base environment
 # conda config --set auto_activate_base false
 
