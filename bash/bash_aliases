@@ -56,3 +56,8 @@ alias sqlite3="rlwrap sqlite3"
 
 # using clipper in terminals
 alias xclip="xclip -selection c"
+
+# cineca useful aliases
+alias squeue='squeue --me'
+alias conda="micromamba"
+alias htop="htop -u $USER"

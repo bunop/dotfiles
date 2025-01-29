@@ -52,9 +52,14 @@ if [ -d "${HOME}/Softwares/rvm/bin" ] ; then
     export PATH="${PATH}:$HOME/Softwares/rvm/bin"
 fi
 
-# Nextflow custom environment variables
+# useful variables
+export PRJ_ACCOUNT=$(cat ${HOME}/.ch_acc.def)
+
+# Other Nextflow custom environment variables
 export NXF_EXECUTOR=slurm
-export NXF_OPTS="-Xms500M -Xmx2G"
+export NXF_OPTS="-Xms500M -Xmx4G"
 export NXF_SINGULARITY_CACHEDIR="$WORK/nxf_singularity_cache"
 export NXF_WORK="$CINECA_SCRATCH/nxf_work"
-export NXF_OFFLINE='TRUE'
+export NXF_OFFLINE='true'
+export NXF_ANSI_LOG='false'
+export NXF_TEMP=$TMPDIR
