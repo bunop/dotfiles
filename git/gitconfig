@@ -33,3 +33,5 @@
 	required = true
 [pull]
 	ff = only
+[core]
+	excludesFile = ~/.gitignore
