@@ -25,6 +25,9 @@ alias dkpsa="docker ps -a"
 alias dkpse="docker ps -a | awk 'BEGIN { FS = \"[ ][ ]+\" } {if (\$5 ~ /^Exited/) {print \$0}}'"
 alias dkpseid="dpse | cut -f1 --delim=\" \""
 
+# when docker compose plugin is installed
+alias docker-compose="docker compose"
+
 # una function per attivare un docker e attaccarsi
 function dka () {
     docker start $1 && docker attach $1

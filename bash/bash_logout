@@ -1,27 +1,31 @@
 # ~/.bash_logout: executed by bash(1) when login shell exits.
 
+# unset the aliases set in .bash_aliases
+unalias -a
+
 # when leaving the console clear the screen to increase privacy
 if [ "$SHLVL" = 1 ]; then
     [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
 fi
 
-# Set a numeber of backup history files
+# Set a number of backup history files
 MAX_BACKUP=15
 
-# Cancella il file .bash_history.10 se c'è
+# delete the oldest backup file
 if [ -e ~/.bash_history.$MAX_BACKUP ]
- then rm ~/.bash_history.$MAX_BACKUP
+    then rm ~/.bash_history.$MAX_BACKUP
 fi
 
-#Ìl file bash_history.1 viene rinominato in bash_history.2 e così via
+# rename the backup files. The file .bash_history.1 is renamed to .bash_history.2,
+# .bash_history.2 to .bash_history.3, and so on
 for i in $(seq $MAX_BACKUP -1 2); do
     let j=$i-1;
     if [ -e ~/.bash_history.$j ]; then
-         mv ~/.bash_history.$j ~/.bash_history.$i
+        mv ~/.bash_history.$j ~/.bash_history.$i
     fi
 done;
 
-#il file .bash_history viene copiato in .bash_history.1 mantenendone gli attributi
+# make a backup of the current history file
 if [ -e ~/.bash_history ]
- then cp -a ~/.bash_history ~/.bash_history.1
+    then cp -a ~/.bash_history ~/.bash_history.1
 fi

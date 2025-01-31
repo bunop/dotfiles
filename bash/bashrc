@@ -193,3 +193,36 @@ case "$-" in *i*)
     #and we can turn it off without any problem by typing:
     stty -ixon
 esac
+
+# enabling singularity completion
+if [ -f "/usr/local/etc/bash_completion.d/singularity" ]; then
+    . /usr/local/etc/bash_completion.d/singularity
+fi
+
+# enabling poetry completion
+if [ -f "${HOME}/.poetry_completion" ]; then
+    . "${HOME}/.poetry_completion"
+fi
+
+# enablig gitpod completion
+if [ -f "${HOME}/.gitpod_completion" ]; then
+    . "${HOME}/.gitpod_completion"
+fi
+
+# Use the following command to don't activate the default base environment
+# conda config --set auto_activate_base false
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/local/anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/local/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/anaconda/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/local/anaconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
