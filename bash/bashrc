@@ -166,6 +166,11 @@ if [ -f "${HOME}/.poetry_completion" ]; then
     . "${HOME}/.poetry_completion"
 fi
 
+# enablig gitpod completion
+if [ -f "${HOME}/.gitpod_completion" ]; then
+    . "${HOME}/.gitpod_completion"
+fi
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 

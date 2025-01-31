@@ -11,7 +11,7 @@ alias ht="history | tail"
 alias hd="history -d"
 alias jobs='jobs -l'
 
-#prompt if deleting more than 3 files at a time #
+# prompt if deleting more than 3 files at a time #
 alias rm='rm -I'
 
 # confirmation #
