@@ -26,6 +26,18 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+# local perl installation (activate only one times per shell)
+# check if local::lib is installed before activating it
+if [ $SHLVL -eq 1 ]; then
+    perl -Mlocal::lib=${HOME}/Softwares/perl5 -e 1 2>/dev/null
+    if [ $? -eq 0 ]; then
+      eval "$(perl -I${HOME}/Softwares/perl5/lib/perl5 -Mlocal::lib=${HOME}/Softwares/perl5)"
+    fi
+fi
+
+# to deactivate local::lib
+# eval $(perl -Mlocal::lib=--deactivate-all)
+
 # add go to PATH (if installed)
 if [ -d "/opt/go" ] ; then
     GOPATH="/opt/go"

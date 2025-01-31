@@ -204,6 +204,11 @@ if [ -f "${HOME}/.poetry_completion" ]; then
     . "${HOME}/.poetry_completion"
 fi
 
+# enablig gitpod completion
+if [ -f "${HOME}/.gitpod_completion" ]; then
+    . "${HOME}/.gitpod_completion"
+fi
+
 # Use the following command to don't activate the default base environment
 # conda config --set auto_activate_base false
 
