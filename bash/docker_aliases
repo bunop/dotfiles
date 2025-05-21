@@ -9,6 +9,7 @@ alias dk='docker'
 alias dki='docker images'
 alias dks='docker service'
 alias dkrm='docker rm'
+alias dkrmi='docker rmi'
 alias dkl='docker logs'
 alias dklf='docker logs -f'
 alias dkflush='docker rm `docker ps --no-trunc -aq`'
@@ -19,8 +20,6 @@ alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'
 ## Useful alias for docker:
 # http://nathanleclaire.com/blog/2014/07/12/10-docker-tips-and-tricks-that-will-make-you-sing-a-whale-song-of-joy/
 # adapted in order to have always dk for docker commands
-# alias drm="docker rm"
-# alias dps="docker ps"
 alias dkpsa="docker ps -a"
 alias dkpse="docker ps -a | awk 'BEGIN { FS = \"[ ][ ]+\" } {if (\$5 ~ /^Exited/) {print \$0}}'"
 alias dkpseid="dpse | cut -f1 --delim=\" \""
@@ -28,97 +27,45 @@ alias dkpseid="dpse | cut -f1 --delim=\" \""
 # when docker compose plugin is installed
 alias docker-compose="docker compose"
 
-# una function per attivare un docker e attaccarsi
+# activate a container then attach to it
 function dka () {
     docker start $1 && docker attach $1
 }
 
-# Dump della network di docker
+# dumping the network settings of a container
 function dkgetnetwork() {
-    docker inspect -f '{{ json .NetworkSettings }}' $1 | python -mjson.tool
+    docker inspect -f '{{ json .NetworkSettings }}' $1 | jq
 }
 
-# dump dell'ip address del container docker
+# dumping the ip address of a container
 function dkgetipaddress() {
     docker inspect --format="{{.NetworkSettings.IPAddress}}" $1
 }
 
-# getta i volumi (updated 1.8.1)
+# collect the volumes of a container
 # http://stackoverflow.com/questions/30133664/how-do-you-list-volumes-in-docker-containers
 function dkgetvolumes() {
     ddocker inspect -f '{{ (index .Mounts 0).Source }}' $1
 }
 
-# ripulisce i container stopped e le immagini non utilizzate
-# http://stackoverflow.com/questions/32723111/how-to-remove-old-and-unused-docker-images
-# dkcleanup(){
-#     docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-#     docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
-# }
+# to collect labels
+function dkgetlabels() {
+    docker inspect --format '{{json .Config.Labels}}' $1 | jq
+}
 
+# clean up stopped containers and dangling images
+# http://stackoverflow.com/questions/32723111/how-to-remove-old-and-unused-docker-images
+dkcleanup(){
+    docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+    docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
+}
+
+# dkln: Follows the logs of a running Docker container whose name matches the given pattern.
+# Usage: dkln <container_name_pattern>
+# Example: dkln myapp
+# This will attach to the logs of the first container whose name contains "myapp".
 dkln() {
   docker logs -f `docker ps | grep $1 | awk '{print $1}'`
-}
-
-dkp() {
-  if [ ! -f .dockerignore ]; then
-    echo "Warning, .dockerignore file is missing."
-    read -p "Proceed anyway?"
-  fi
-
-  if [ ! -f package.json ]; then
-    echo "Warning, package.json file is missing."
-    read -p "Are you in the right directory?"
-  fi
-
-  VERSION=`cat package.json | jq .version | sed 's/\"//g'`
-  NAME=`cat package.json | jq .name | sed 's/\"//g'`
-  LABEL="$1/$NAME:$VERSION"
-
-  docker build --build-arg NPM_TOKEN=${NPM_TOKEN} -t $LABEL .
-
-  read -p "Press enter to publish"
-  docker push $LABEL
-}
-
-dkpnc() {
-  if [ ! -f .dockerignore ]; then
-    echo "Warning, .dockerignore file is missing."
-    read -p "Proceed anyway?"
-  fi
-
-  if [ ! -f package.json ]; then
-    echo "Warning, package.json file is missing."
-    read -p "Are you in the right directory?"
-  fi
-
-  VERSION=`cat package.json | jq .version | sed 's/\"//g'`
-  NAME=`cat package.json | jq .name | sed 's/\"//g'`
-  LABEL="$1/$NAME:$VERSION"
-
-  docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --no-cache=true -t $LABEL .
-  read -p "Press enter to publish"
-  docker push $LABEL
-}
-
-dkpl() {
-  if [ ! -f .dockerignore ]; then
-    echo "Warning, .dockerignore file is missing."
-    read -p "Proceed anyway?"
-  fi
-
-  if [ ! -f package.json ]; then
-    echo "Warning, package.json file is missing."
-    read -p "Are you in the right directory?"
-  fi
-
-  VERSION=`cat package.json | jq .version | sed 's/\"//g'`
-  NAME=`cat package.json | jq .name | sed 's/\"//g'`
-  LATEST="$1/$NAME:latest"
-
-  docker build --build-arg NPM_TOKEN=${NPM_TOKEN} --no-cache=true -t $LATEST .
-  read -p "Press enter to publish"
-  docker push $LATEST
 }
 
 dkclean() {
@@ -150,14 +97,6 @@ dkexe() {
   docker exec -it $1 $2
 }
 
-dkreboot() {
-  osascript -e 'quit app "Docker"'
-  countdown 2
-  open -a Docker
-  echo "Restarting Docker engine"
-  countdown 120
-}
-
 dkstate() {
   docker inspect $1 | jq .[0].State
 }
@@ -167,16 +106,6 @@ dksb() {
   sleep 2
   docker service scale $1=$2
 }
-
-# mongo() {
-#   mongoLabel=`docker ps | grep mongo | awk '{print $NF}'`
-#   docker exec -it $mongoLabel mongo "$@"
-# }
-#
-# redis() {
-#   redisLabel=`docker ps | grep redis | awk '{print $NF}'`
-#   docker exec -it $redisLabel redis-cli
-# }
 
 # https://forums.docker.com/t/how-can-i-list-tags-for-a-repository/32577/7
 function listTags() {
