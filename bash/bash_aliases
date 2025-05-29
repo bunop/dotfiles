@@ -1,6 +1,6 @@
 # ~/.bash_aliases: executed to load aliases from .bashrc
 
-# per i download di youtube
+# download youtube videos in mp4 format
 alias youtube-dl='youtube-dl -f 18'
 
 ## Show hidden files only##
@@ -56,3 +56,6 @@ alias sqlite3="rlwrap sqlite3"
 
 # using clipper in terminals
 alias xclip="xclip -selection c"
+
+# micromamba alias
+alias conda="micromamba"
