@@ -44,6 +44,9 @@ if [ -d "/opt/go" ] ; then
     PATH="${GOPATH}/bin:${PATH}"
 fi
 
+# declare some useful stuff for singularity which can be used in nextflow
+export SINGULARITY_CACHEDIR=$HOME/.singularity
+
 # moving RVM to a different location
 export rvm_path="${HOME}/Softwares/rvm"
 
