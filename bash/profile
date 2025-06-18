@@ -44,8 +44,9 @@ if [ -d "/opt/go" ] ; then
     PATH="${GOPATH}/bin:${PATH}"
 fi
 
-# override nextflow singularity cache dir
-export NXF_SINGULARITY_CACHEDIR="${HOME}/.singularity_cache"
+# declare some useful stuff for singularity which can be used in nextflow
+export SINGULARITY_CACHEDIR=$HOME/.singularity
+export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 
 # manage python packages with poetry
 export PATH="$HOME/.poetry/bin:$PATH"
