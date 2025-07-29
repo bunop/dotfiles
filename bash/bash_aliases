@@ -61,3 +61,4 @@ alias xclip="xclip -selection c"
 alias squeue='squeue --me'
 alias conda="micromamba"
 alias htop="htop -u $USER"
+alias R='R --no-save --no-restore'
