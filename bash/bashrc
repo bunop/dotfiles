@@ -178,25 +178,3 @@ fi
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-
-# Use the following command to don't activate the default base environment
-# conda config --set auto_activate_base false
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'micromamba shell init' !!
-export MAMBA_EXE='/g100/home/userexternal/pcozzi00/bin/micromamba';
-export MAMBA_ROOT_PREFIX='/g100/home/userexternal/pcozzi00/.conda';
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-if [ -d "$HOME/.sdkman" ]; then
-    export SDKMAN_DIR="$HOME/.sdkman"
-    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
