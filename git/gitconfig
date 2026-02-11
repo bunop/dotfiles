@@ -1,14 +1,14 @@
 [color]
 	ui = true
 [credential]
-	helper = cache
+	helper = manager
 [format]
 	pretty = %h - %an, %ar : %s
 [merge]
 	tool = vimdiff
 [user]
 	name = Paolo Cozzi
-	email = bunop@libero.it
+	email = paoloalessandro.cozzi@gmail.com
 [alias]
 	mytree = log --all --decorate --oneline --graph
 	# http://stackoverflow.com/questions/1753070/git-ignore-files-only-locally
@@ -16,8 +16,7 @@
 	unignore = update-index --no-assume-unchanged
 	ignored = !git ls-files -v | grep "^[[:lower:]]"
 	# https://coderwall.com/p/n1d-na/excluding-files-from-git-locally
-	exclude = !sh -c 'echo "$1" >> .git/info/exclude' -
-
+	exclude = "!f() { echo \"$1\" >> .git/info/exclude; }; f"
 [push]
 	default = simple
 [status]
