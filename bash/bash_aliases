@@ -56,3 +56,6 @@ alias sqlite3="rlwrap sqlite3"
 
 # using clipper in terminals
 alias xclip="xclip -selection c"
+
+# an iotop alternate
+alias iotop="iotop-c"
