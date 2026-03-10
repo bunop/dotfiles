@@ -17,9 +17,19 @@ SRC_DIR="${DOTFILES_DIR}/${MODULE}"
 [[ -d "${SRC_DIR}" ]] || { echo "ERROR: module '${MODULE}' not found (${SRC_DIR})"; exit 1; }
 
 install_file() {
-    local filename="$1"
-    local src="${SRC_DIR}/${filename}"
-    local target="${HOME}/.${filename}"
+    local src="$1"
+    # relative path from SRC_DIR, e.g. "bashrc" or "R/Makevars"
+    local rel="${src#${SRC_DIR}/}"
+    # first path component gets a dot prefix: "bashrc" -> ".bashrc", "R/Makevars" -> ".R/Makevars"
+    local target="${HOME}/.${rel}"
+    local target_dir
+    target_dir="$(dirname "${target}")"
+
+    # Ensure parent directory exists (for nested paths like ~/.R/)
+    if [[ ! -d "${target_dir}" ]]; then
+        mkdir -p "${target_dir}"
+        echo "created dir: ${target_dir}"
+    fi
 
     # Already the correct symlink — skip
     if [[ -L "${target}" && "$(readlink -f "${target}")" == "$(readlink -f "${src}")" ]]; then
@@ -42,7 +52,6 @@ install_file() {
     echo "linked: ${target} -> ${src}"
 }
 
-for src_file in "${SRC_DIR}"/*; do
-    [[ -f "${src_file}" ]] || continue
-    install_file "$(basename "${src_file}")"
-done
+while IFS= read -r -d '' src_file; do
+    install_file "${src_file}"
+done < <(find "${SRC_DIR}" -type f -print0 | sort -z)
