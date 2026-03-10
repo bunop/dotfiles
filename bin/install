@@ -2,11 +2,23 @@
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GIT_DIR="${DOTFILES_DIR}/git"
+
+usage() {
+    echo "Usage: $(basename "$0") <module>"
+    echo "  Available modules: $(ls -d "${DOTFILES_DIR}"/*/  | xargs -n1 basename | tr '\n' ' ')"
+    exit 1
+}
+
+[[ $# -eq 1 ]] || usage
+
+MODULE="$1"
+SRC_DIR="${DOTFILES_DIR}/${MODULE}"
+
+[[ -d "${SRC_DIR}" ]] || { echo "ERROR: module '${MODULE}' not found (${SRC_DIR})"; exit 1; }
 
 install_file() {
     local filename="$1"
-    local src="${GIT_DIR}/${filename}"
+    local src="${SRC_DIR}/${filename}"
     local target="${HOME}/.${filename}"
 
     # Already the correct symlink — skip
@@ -30,7 +42,7 @@ install_file() {
     echo "linked: ${target} -> ${src}"
 }
 
-for src_file in "${GIT_DIR}"/*; do
+for src_file in "${SRC_DIR}"/*; do
     [[ -f "${src_file}" ]] || continue
     install_file "$(basename "${src_file}")"
 done
