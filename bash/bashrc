@@ -204,11 +204,6 @@ if [ -f "${HOME}/.poetry_completion" ]; then
     . "${HOME}/.poetry_completion"
 fi
 
-# enablig gitpod completion
-if [ -f "${HOME}/.gitpod_completion" ]; then
-    . "${HOME}/.gitpod_completion"
-fi
-
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'micromamba shell init' !!
 export MAMBA_EXE="${HOME}/.local/bin/micromamba";
