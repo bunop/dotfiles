@@ -51,6 +51,26 @@ export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 # manage python packages with poetry
 export PATH="$HOME/.poetry/bin:$PATH"
 
+# Automatic management of ssh-agent
+SSH_ENV="$HOME/.ssh/agent.env"
+function start_ssh_agent {
+    echo "Starting ssh-agent..."
+    eval $(ssh-agent -s) > /dev/null
+    ssh-add
+    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$SSH_ENV"
+    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_ENV"
+    chmod 600 "$SSH_ENV"
+}
+
+if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
+    if [ -f "$SSH_ENV" ]; then
+        source "$SSH_ENV" > /dev/null
+    fi
+    if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
+        start_ssh_agent
+    fi
+fi
+
 # Setting keyboards in WSL distributions (execute only once per login session)
 if grep -qi microsoft /proc/version 2>/dev/null; then
     command -v setxkbmap >/dev/null 2>&1 && setxkbmap it 2>/dev/null
