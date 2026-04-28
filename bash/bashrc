@@ -159,9 +159,14 @@ case "$-" in *i*)
     stty -ixon
 esac
 
+# enabling git completion
+if [ -f "/usr/share/bash-completion/completions/git" ]; then
+    . /usr/share/bash-completion/completions/git
+fi
+
 # enabling singularity completion
-if [ -f "/usr/local/etc/bash_completion.d/singularity" ]; then
-    . /usr/local/etc/bash_completion.d/singularity
+if [ -f "/etc/bash_completion.d/singularity" ]; then
+    . /etc/bash_completion.d/singularity
 fi
 
 # enabling poetry completion
@@ -169,11 +174,11 @@ if [ -f "${HOME}/.poetry_completion" ]; then
     . "${HOME}/.poetry_completion"
 fi
 
-
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
-# User specific aliases and functions
+# Use the following command to don't activate the default base environment
+# conda config --set auto_activate_base false
 
 # >>> mamba initialize >>>
 # NOTE: This should be in `~/.bashrc` if you need conda/micromamba support
