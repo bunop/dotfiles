@@ -91,7 +91,7 @@ fi
 complete -cf sudo
 complete -cf man
 
-# Sempre per gestire meglio la history
+# Enhance history cleanup by removing duplicates and commands matching $HISTIGNORE entries
 # http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
 # remove duplicates while preserving input order
 function dedup {
@@ -118,20 +118,16 @@ function history_cleanup {
    local HISTFILE_DST=/tmp/.$USER.bash_history.clean
    if [ -f $HISTFILE_SRC ]; then
       \cp $HISTFILE_SRC $HISTFILE_SRC.backup
-      #Via gli spazi alla fine del file
+      # Remove trailing spaces at the end of the file
       sed -i "s/ *$//" $HISTFILE_SRC
       dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
       \mv $HISTFILE_DST $HISTFILE_SRC
       chmod go-r $HISTFILE_SRC
-      #Svuota l'elenco della cronologia eliminando tutti gli elementi
-      #history -c
-      #Legge il contenuto del file di cronologia e lo usa come cronologia corrente
-      #history -r #non serve, quando finisce questo script il file viene letto
    fi
 }
 
-# Eseguo la pulizia della bash history (prima che venga caricato dalla bash)
-# Ma solo per le shell interattive (quindi non gestisco qsub)
+# Run bash history cleanup before bash loads it
+# Only for interactive shells (so qsub is not handled)
 case "$-" in
     *i*) history_cleanup
 esac
@@ -142,20 +138,20 @@ esac
 # export LESS="-iMSx4 -FX"
 # export LESS="-iMSx4"
 
-# Una funzione per chiamare il .bash logout anche per una shell non-login
+# A function to call .bash_logout even for a non-login shell
 trap_exit() {
-    #Se è una login shell, torno 1 e non eseguo questa condizione. Altrimenti eseguo.
-    #if [ $(shopt -q login_shell && echo 1 || echo 0 ) -eq 0 ] ; then
+    # If this is a login shell, return 1 and skip this condition; otherwise run it.
     if ! eval shopt -q login_shell ; then
         . "$HOME/.bash_logout"
     fi
 }
 
-# Lancio il trap solo se la shell è interattiva
+# call the trap_exit function when the shell exits, but only if this is an interactive
+# shell (i.e. not a script)
 case "$-" in *i*)
     trap trap_exit EXIT
-    #The suspend and resume feature is not needed in most modern terminals,
-    #and we can turn it off without any problem by typing:
+    # The suspend and resume feature is not needed in most modern terminals,
+    # and we can turn it off without any problem by typing:
     stty -ixon
 esac
 
