@@ -11,9 +11,14 @@ usage() {
 
 [[ $# -eq 1 ]] || usage
 
-MODULE="$1"
-SRC_DIR="${DOTFILES_DIR}/${MODULE}"
+# Remove trailing slash if any, e.g. "bash/" becomes "bash"
+MODULE="${1%/}"
 
+# Check that the module name is valid
+[[ -n "${MODULE}" ]] || usage
+
+# Check that the source directory exists
+SRC_DIR="${DOTFILES_DIR}/${MODULE}"
 [[ -d "${SRC_DIR}" ]] || { echo "ERROR: module '${MODULE}' not found (${SRC_DIR})"; exit 1; }
 
 install_file() {
