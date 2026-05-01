@@ -49,6 +49,35 @@ The script will:
 
 **Nested destination** (e.g. `~/.config/foo`) — mirror the subdirectory structure inside the module directory (e.g. `<module>/config/foo`).
 
+## Windows
+
+This branch tracks Windows-specific configurations. Not all modules apply:
+
+| Module       | Valid on Windows?  | Notes |
+|--------------|--------------------|-------|
+| `powershell` | Yes                | Windows-specific module |
+| `git`        | Yes                | Git for Windows reads `~/.gitconfig` |
+| `vim`        | Yes                | If Vim/Neovim is installed |
+| `R`          | Yes                | R for Windows reads `~/.Rprofile` and `~/.R/Makevars` |
+| `bash`       | Partial            | Only with Git Bash or WSL |
+| `psql`       | Partial            | Only if PostgreSQL client is installed |
+| `sqlite`     | Partial            | Only if sqlite3 is installed |
+| `tmux`       | No                 | Not available on Windows |
+| `screen`     | No                 | Not available on Windows |
+
+### Installation on Windows
+
+Use the PowerShell script instead of `bin/install`:
+
+```powershell
+.\bin\install.ps1 git
+.\bin\install.ps1 powershell
+.\bin\install.ps1 vim
+```
+
+> **Note:** creating symlinks on Windows requires either **Developer Mode** enabled
+> (Settings → Privacy & Security → For Developers) or an elevated terminal.
+
 ## License
 
 [MIT](LICENSE)
