@@ -34,3 +34,5 @@
 	ff = only
 [core]
 	excludesFile = ~/.gitignore
+	autocrlf = true
+	whitespace = cr-at-eol
