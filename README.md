@@ -75,6 +75,9 @@ Use the PowerShell script instead of `bin/install`:
 .\bin\install.ps1 vim
 ```
 
+Install the `powershell` module only from PowerShell 7 (`pwsh`): Windows PowerShell 5.1 uses a different
+`$PROFILE` path, so the installer now stops with an error instead of linking the wrong profile.
+
 > **Note:** creating symlinks on Windows requires either **Developer Mode** enabled
 > (Settings → Privacy & Security → For Developers) or an elevated terminal.
 

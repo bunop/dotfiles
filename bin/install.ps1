@@ -41,22 +41,29 @@ if (-not (Test-Path $SrcDir -PathType Container)) {
 }
 
 function Install-DotFile {
-    param([string]$Src)
+    param(
+        [string]$Src,
+        [string]$TargetOverride = ''
+    )
 
     $Bak = $null
     $movedToBackup = $false
 
-    # Relative path from SrcDir, e.g. "gitconfig" or "R\Makevars"
-    $rel = $Src.Substring($SrcDir.Length).TrimStart('\', '/')
+    if ($TargetOverride) {
+        $Target = $TargetOverride
+    } else {
+        # Relative path from SrcDir, e.g. "gitconfig" or "R\Makevars"
+        $rel = $Src.Substring($SrcDir.Length).TrimStart('\', '/')
 
-    # Add a dot prefix to the first path component:
-    #   "gitconfig"   -> ".gitconfig"
-    #   "R\Makevars"  -> ".R\Makevars"
-    $parts = $rel -split '[/\\]', 2
-    $parts[0] = '.' + $parts[0]
-    $dotRel = $parts -join [System.IO.Path]::DirectorySeparatorChar
+        # Add a dot prefix to the first path component:
+        #   "gitconfig"   -> ".gitconfig"
+        #   "R\Makevars"  -> ".R\Makevars"
+        $parts = $rel -split '[/\\]', 2
+        $parts[0] = '.' + $parts[0]
+        $dotRel = $parts -join [System.IO.Path]::DirectorySeparatorChar
 
-    $Target = Join-Path $HOME $dotRel
+        $Target = Join-Path $HOME $dotRel
+    }
     $TargetDir = Split-Path $Target -Parent
 
     # Ensure parent directory exists
@@ -105,5 +112,13 @@ function Install-DotFile {
 
 $files = Get-ChildItem -LiteralPath $SrcDir -File -Recurse | Sort-Object FullName
 foreach ($file in $files) {
-    Install-DotFile -Src $file.FullName
+    if ($file.Name -eq 'Microsoft.PowerShell_profile.ps1') {
+        if ($PSVersionTable.PSVersion.Major -lt 7) {
+            Write-Error 'The PowerShell profile must be installed from PowerShell 7 (pwsh), because $PROFILE differs from Windows PowerShell 5.1.'
+            exit 1
+        }
+        Install-DotFile -Src $file.FullName -TargetOverride $PROFILE
+    } else {
+        Install-DotFile -Src $file.FullName
+    }
 }
