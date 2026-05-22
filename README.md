@@ -78,6 +78,9 @@ Use the PowerShell script instead of `bin/install`:
 > **Note:** creating symlinks on Windows requires either **Developer Mode** enabled
 > (Settings → Privacy & Security → For Developers) or an elevated terminal.
 
+> **Cross-drive paths:** this also works when the repo is on a different drive than `$HOME`
+> (for example repo on `D:` and home on `C:`). Windows symbolic links can target files across volumes.
+
 ## License
 
 [MIT](LICENSE)

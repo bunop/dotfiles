@@ -43,6 +43,9 @@ if (-not (Test-Path $SrcDir -PathType Container)) {
 function Install-DotFile {
     param([string]$Src)
 
+    $Bak = $null
+    $movedToBackup = $false
+
     # Relative path from SrcDir, e.g. "gitconfig" or "R\Makevars"
     $rel = $Src.Substring($SrcDir.Length).TrimStart('\', '/')
 
@@ -65,8 +68,10 @@ function Install-DotFile {
     # Already the correct symlink — skip
     if (Test-Path $Target) {
         $item = Get-Item $Target -Force
-        if ($item.LinkType -eq 'SymbolicLink') {
-            $resolved = (Resolve-Path $item.Target -ErrorAction SilentlyContinue)?.Path
+        $isSymlink = ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0
+        if ($isSymlink) {
+            $resolvedPath = Resolve-Path -Path $item.Target -ErrorAction SilentlyContinue
+            $resolved = if ($resolvedPath) { $resolvedPath.Path } else { $null }
             if ($resolved -eq (Resolve-Path $Src).Path) {
                 Write-Host "already linked: $Target"
                 return
@@ -81,10 +86,21 @@ function Install-DotFile {
         }
         Write-Host "backup: $Target -> $Bak"
         Move-Item -LiteralPath $Target -Destination $Bak
+        $movedToBackup = $true
     }
 
-    New-Item -ItemType SymbolicLink -Path $Target -Target $Src | Out-Null
-    Write-Host "linked: $Target -> $Src"
+    try {
+        New-Item -ItemType SymbolicLink -Path $Target -Target $Src | Out-Null
+        Write-Host "linked: $Target -> $Src"
+    }
+    catch [System.UnauthorizedAccessException] {
+        if ($movedToBackup -and $Bak -and (Test-Path $Bak) -and -not (Test-Path $Target)) {
+            Move-Item -LiteralPath $Bak -Destination $Target
+            Write-Host "restored: $Target"
+        }
+        Write-Error "Cannot create symlink for '$Target'. Enable Windows Developer Mode or run PowerShell as Administrator."
+        exit 1
+    }
 }
 
 $files = Get-ChildItem -LiteralPath $SrcDir -File -Recurse | Sort-Object FullName
