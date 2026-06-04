@@ -36,3 +36,4 @@
 	excludesFile = ~/.gitignore
 	autocrlf = true
 	whitespace = cr-at-eol
+	symlinks = true
