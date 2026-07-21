@@ -16,8 +16,11 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# control write access to your terminal
-mesg n
+# control write access to your terminal (if mesg is installed)
+# this is in util-linux-extra in debian 13, util-linux in older distribution
+if command -v mesg >/dev/null 2>&1; then
+    mesg n
+fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
