@@ -49,15 +49,22 @@ export APPTAINER_CACHEDIR=$HOME/.apptainer
 export SINGULARITY_CACHEDIR=$APPTAINER_CACHEDIR
 export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 
-# moving RVM to a different location
-export rvm_path="${HOME}/Softwares/rvm"
+# Automatic management of ssh-agent
+SSH_ENV="$HOME/.ssh/agent.env"
+function start_ssh_agent {
+    echo "Starting ssh-agent..."
+    eval $(ssh-agent -s) > /dev/null
+    ssh-add > /dev/null 2>&1
+    echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$SSH_ENV"
+    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_ENV"
+    chmod 600 "$SSH_ENV"
+}
 
-# this is required in order to rvm work properly in custom folders
-if [ -s "${rvm_path-$HOME/.rvm}/scripts/rvm" ]; then
-    source "${rvm_path-$HOME/.rvm}/scripts/rvm"
-fi
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-if [ -d "${HOME}/Softwares/rvm/bin" ] ; then
-    export PATH="${PATH}:$HOME/Softwares/rvm/bin"
+if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
+    if [ -f "$SSH_ENV" ]; then
+        source "$SSH_ENV" > /dev/null
+    fi
+    if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
+        start_ssh_agent
+    fi
 fi
