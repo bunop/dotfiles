@@ -8,7 +8,7 @@
 	tool = vimdiff
 [user]
 	name = Paolo Cozzi
-	email = bunop@libero.it
+	email = paoloalessandro.cozzi@gmail.com
 [alias]
 	mytree = log --all --decorate --oneline --graph
 	# http://stackoverflow.com/questions/1753070/git-ignore-files-only-locally

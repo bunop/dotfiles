@@ -44,8 +44,10 @@ if [ -d "/opt/go" ] ; then
     PATH="${GOPATH}/bin:${PATH}"
 fi
 
-# override nextflow singularity cache dir
-export NXF_SINGULARITY_CACHEDIR="${HOME}/.singularity_cache"
+# declare some useful stuff for singularity which can be used in nextflow
+export APPTAINER_CACHEDIR=$HOME/.apptainer
+export SINGULARITY_CACHEDIR=$APPTAINER_CACHEDIR
+export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 
 # moving RVM to a different location
 export rvm_path="${HOME}/Softwares/rvm"
