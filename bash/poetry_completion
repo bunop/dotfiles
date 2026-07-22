@@ -1,4 +1,4 @@
-_poetry_cbf94c2d9d758e0d_complete()
+_poetry_13e27e8034a34474_complete()
 {
     local cur script coms opts com
     COMPREPLY=()
@@ -21,7 +21,7 @@ _poetry_cbf94c2d9d758e0d_complete()
 
     # completing for an option
     if [[ ${cur} == --* ]] ; then
-        opts="--ansi --directory --help --no-ansi --no-cache --no-interaction --no-plugins --quiet --verbose --version"
+        opts="--ansi --directory --help --no-ansi --no-cache --no-interaction --no-plugins --project --quiet --verbose --version"
 
         case "$com" in
 
@@ -30,11 +30,11 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             (add)
-            opts="${opts} --allow-prereleases --dev --dry-run --editable --extras --group --lock --optional --platform --python --source"
+            opts="${opts} --allow-prereleases --dev --dry-run --editable --extras --group --lock --markers --optional --platform --python --source"
             ;;
 
             (build)
-            opts="${opts} --format"
+            opts="${opts} --clean --config-settings --format --local-version --output"
             ;;
 
             ('cache clear')
@@ -46,11 +46,11 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             (check)
-            opts="${opts} "
+            opts="${opts} --lock --strict"
             ;;
 
             (config)
-            opts="${opts} --list --local --unset"
+            opts="${opts} --list --local --migrate --unset"
             ;;
 
             ('debug info')
@@ -61,8 +61,16 @@ _poetry_cbf94c2d9d758e0d_complete()
             opts="${opts} --extras --install --python --tree"
             ;;
 
+            ('debug tags')
+            opts="${opts} "
+            ;;
+
+            ('env activate')
+            opts="${opts} "
+            ;;
+
             ('env info')
-            opts="${opts} --path"
+            opts="${opts} --executable --path"
             ;;
 
             ('env list')
@@ -77,10 +85,6 @@ _poetry_cbf94c2d9d758e0d_complete()
             opts="${opts} "
             ;;
 
-            (export)
-            opts="${opts} --dev --extras --format --only --output --with --with-credentials --without --without-hashes --without-urls"
-            ;;
-
             (help)
             opts="${opts} "
             ;;
@@ -90,7 +94,7 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             (install)
-            opts="${opts} --all-extras --dry-run --extras --no-dev --no-root --only --only-root --remove-untracked --sync --with --without"
+            opts="${opts} --all-extras --all-groups --compile --dry-run --extras --no-directory --no-root --only --only-root --sync --with --without"
             ;;
 
             (list)
@@ -98,19 +102,31 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             (lock)
-            opts="${opts} --check --no-update"
+            opts="${opts} --regenerate"
             ;;
 
             (new)
-            opts="${opts} --name --readme --src"
+            opts="${opts} --author --dependency --description --dev-dependency --flat --interactive --license --name --python --readme --src"
             ;;
 
             (publish)
-            opts="${opts} --build --cert --client-cert --dry-run --password --repository --skip-existing --username"
+            opts="${opts} --build --cert --client-cert --dist-dir --dry-run --password --repository --skip-existing --username"
+            ;;
+
+            ('python install')
+            opts="${opts} --clean --free-threaded --implementation --reinstall"
+            ;;
+
+            ('python list')
+            opts="${opts} --all --free-threaded --implementation --managed"
+            ;;
+
+            ('python remove')
+            opts="${opts} --free-threaded --implementation"
             ;;
 
             (remove)
-            opts="${opts} --dev --dry-run --group"
+            opts="${opts} --dev --dry-run --group --lock"
             ;;
 
             (run)
@@ -130,7 +146,7 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             ('self lock')
-            opts="${opts} --check --no-update"
+            opts="${opts} --regenerate"
             ;;
 
             ('self remove')
@@ -138,27 +154,27 @@ _poetry_cbf94c2d9d758e0d_complete()
             ;;
 
             ('self show')
-            opts="${opts} --addons --latest --outdated --tree"
+            opts="${opts} --addons --format --latest --outdated --tree"
             ;;
 
             ('self show plugins')
             opts="${opts} "
             ;;
 
+            ('self sync')
+            opts="${opts} --dry-run"
+            ;;
+
             ('self update')
             opts="${opts} --dry-run --preview"
             ;;
 
-            (shell)
-            opts="${opts} "
-            ;;
-
             (show)
-            opts="${opts} --all --latest --no-dev --only --outdated --tree --why --with --without"
+            opts="${opts} --all --format --latest --no-truncate --only --outdated --top-level --tree --why --with --without"
             ;;
 
             ('source add')
-            opts="${opts} --default --secondary"
+            opts="${opts} --priority"
             ;;
 
             ('source remove')
@@ -169,12 +185,16 @@ _poetry_cbf94c2d9d758e0d_complete()
             opts="${opts} "
             ;;
 
+            (sync)
+            opts="${opts} --all-extras --all-groups --compile --dry-run --extras --no-directory --no-root --only --only-root --with --without"
+            ;;
+
             (update)
-            opts="${opts} --dry-run --lock --no-dev --only --with --without"
+            opts="${opts} --dry-run --lock --only --sync --with --without"
             ;;
 
             (version)
-            opts="${opts} --dry-run --short"
+            opts="${opts} --dry-run --next-phase --short"
             ;;
 
         esac
@@ -187,7 +207,7 @@ _poetry_cbf94c2d9d758e0d_complete()
 
     # completing for a command
     if [[ $cur == $com ]]; then
-        coms="about add build 'cache clear' 'cache list' check config 'debug info' 'debug resolve' 'env info' 'env list' 'env remove' 'env use' export help init install list lock new publish remove run search 'self add' 'self install' 'self lock' 'self remove' 'self show' 'self show plugins' 'self update' shell show 'source add' 'source remove' 'source show' update version"
+        coms="about add build 'cache clear' 'cache list' check config 'debug info' 'debug resolve' 'debug tags' 'env activate' 'env info' 'env list' 'env remove' 'env use' help init install list lock new publish 'python install' 'python list' 'python remove' remove run search 'self add' 'self install' 'self lock' 'self remove' 'self show' 'self show plugins' 'self sync' 'self update' show 'source add' 'source remove' 'source show' sync update version"
 
         COMPREPLY=($(compgen -W "${coms}" -- ${cur}))
         __ltrim_colon_completions "$cur"
@@ -196,5 +216,5 @@ _poetry_cbf94c2d9d758e0d_complete()
     fi
 }
 
-complete -o default -F _poetry_cbf94c2d9d758e0d_complete poetry
-complete -o default -F _poetry_cbf94c2d9d758e0d_complete /home/paolo/.local/share/pypoetry/venv/bin/poetry
+complete -o default -F _poetry_13e27e8034a34474_complete poetry
+complete -o default -F _poetry_13e27e8034a34474_complete '~/.local/bin/poetry'
