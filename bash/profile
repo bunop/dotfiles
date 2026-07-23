@@ -28,7 +28,7 @@ fi
 
 # local perl installation (activate only one times per shell)
 # check if local::lib is installed before activating it
-if [ $SHLVL -eq 1 ]; then
+if [ "${SHLVL:-0}" -eq 1 ]; then
     perl -Mlocal::lib=${HOME}/Softwares/perl5 -e 1 2>/dev/null
     if [ $? -eq 0 ]; then
       eval "$(perl -I${HOME}/Softwares/perl5/lib/perl5 -Mlocal::lib=${HOME}/Softwares/perl5)"
@@ -51,7 +51,7 @@ export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 
 # Automatic management of ssh-agent
 SSH_ENV="$HOME/.ssh/agent.env"
-function start_ssh_agent {
+start_ssh_agent() {
     echo "Starting ssh-agent..."
     eval $(ssh-agent -s) > /dev/null
     ssh-add > /dev/null 2>&1
@@ -62,7 +62,7 @@ function start_ssh_agent {
 
 if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
     if [ -f "$SSH_ENV" ]; then
-        source "$SSH_ENV" > /dev/null
+        . "$SSH_ENV" > /dev/null
     fi
     if [ -z "$SSH_AGENT_PID" ] || ! ps -p $SSH_AGENT_PID > /dev/null 2>&1; then
         start_ssh_agent
