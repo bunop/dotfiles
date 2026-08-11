@@ -228,3 +228,8 @@ if [ -d "$HOME/.sdkman" ]; then
     export SDKMAN_DIR="$HOME/.sdkman"
     [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
+
+# enabling terraform completion
+if command -v terraform &> /dev/null; then
+    complete -C "$(command -v terraform)" terraform
+fi
