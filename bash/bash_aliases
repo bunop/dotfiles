@@ -56,3 +56,9 @@ alias sqlite3="rlwrap sqlite3"
 
 # using clipper in terminals
 alias xclip="xclip -selection c"
+
+# bridge br0 to enable bridged network VM KVM (using cable/dock on enp0s25)
+# need to be manually enabled: NetworkManager cannot detect events on
+# cable on this interface. Need to be turned off when needed
+alias br0-on='nmcli connection up br0-port'
+alias br0-off='nmcli connection down br0 && nmcli connection up "Connessione via cavo 1"'
