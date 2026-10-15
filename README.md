@@ -21,6 +21,7 @@ Each module is a top-level directory. Files inside are symlinked into `$HOME` wi
 | `psql`   | `~/.psqlrc`             |
 | `screen` | `~/.screenrc`           |
 | `sqlite` | `~/.sqliterc`           |
+| `claude` | `~/.claude/skills/…`, `~/.claude/commands/…` |
 
 ## Installation
 
