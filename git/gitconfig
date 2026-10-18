@@ -1,5 +1,3 @@
-[color]
-	ui = true
 [credential]
 	helper = cache
 [format]
@@ -18,8 +16,6 @@
 	# https://coderwall.com/p/n1d-na/excluding-files-from-git-locally
 	exclude = !sh -c 'echo "$1" >> .git/info/exclude' -
 
-[push]
-	default = simple
 [status]
 	submoduleSummary = true
 [diff]
