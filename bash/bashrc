@@ -126,7 +126,7 @@ fi
 complete -cf sudo
 complete -cf man
 
-# Enhance history cleanup by removing duplicates and commands matching $HISTIGNORE entries
+# Enhance history cleanup by removing duplicates
 # http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
 # remove duplicates while preserving input order
 function dedup {
@@ -134,20 +134,7 @@ function dedup {
    tac $@ | awk '! x[$0]++' | tac
 }
 
-# removes $HISTIGNORE commands from input
-function remove_histignore {
-   if [ -n "$HISTIGNORE" ]; then
-      # replace : with |, then * with .*
-      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
-      # negated grep removes matches
-      grep -vx "$IGNORE_PAT" $@
-   else
-      cat $@
-   fi
-}
-
-# clean up the history file by remove duplicates and commands matching
-# $HISTIGNORE entries
+# clean up the history file by removing duplicates
 function history_cleanup {
    local HISTFILE_SRC=~/.bash_history
    local HISTFILE_DST=/tmp/.$USER.bash_history.clean
@@ -155,7 +142,7 @@ function history_cleanup {
       \cp $HISTFILE_SRC $HISTFILE_SRC.backup
       # Remove trailing spaces at the end of the file
       sed -i "s/ *$//" $HISTFILE_SRC
-      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
+      dedup $HISTFILE_SRC >| $HISTFILE_DST
       \mv $HISTFILE_DST $HISTFILE_SRC
       chmod go-r $HISTFILE_SRC
    fi
