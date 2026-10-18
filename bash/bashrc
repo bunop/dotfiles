@@ -133,7 +133,8 @@ complete -cf man
 # export LESS="-iMSx4"
 
 # Add a random fortune cookie at the end of the .bashrc, if the fortune and cowsay programs are available
-if command -v fortune >/dev/null 2>&1 && command -v cowsay >/dev/null 2>&1 && command -v cowthink >/dev/null 2>&1; then
+# Only in top-level shells (SHLVL=1): skip nested shells and tmux panes
+if [ "$SHLVL" = 1 ] && command -v fortune >/dev/null 2>&1 && command -v cowsay >/dev/null 2>&1 && command -v cowthink >/dev/null 2>&1; then
     command fortune -a | fmt -80 -s | $(shuf -n 1 -e cowsay cowthink) -$(shuf -n 1 -e b d g p s t w y) -f $(shuf -n 1 -e $(cowsay -l | tail -n +2)) -n
 fi
 
