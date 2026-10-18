@@ -126,34 +126,6 @@ fi
 complete -cf sudo
 complete -cf man
 
-# Enhance history cleanup by removing duplicates
-# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
-# remove duplicates while preserving input order
-function dedup {
-   #awk '! x[$0]++' $@
-   tac $@ | awk '! x[$0]++' | tac
-}
-
-# clean up the history file by removing duplicates
-function history_cleanup {
-   local HISTFILE_SRC=~/.bash_history
-   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
-   if [ -f $HISTFILE_SRC ]; then
-      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
-      # Remove trailing spaces at the end of the file
-      sed -i "s/ *$//" $HISTFILE_SRC
-      dedup $HISTFILE_SRC >| $HISTFILE_DST
-      \mv $HISTFILE_DST $HISTFILE_SRC
-      chmod go-r $HISTFILE_SRC
-   fi
-}
-
-# Run bash history cleanup before bash loads it
-# Only for interactive shells (so qsub is not handled)
-case "$-" in
-    *i*) history_cleanup
-esac
-
 # set the default pager for terminal like psql, mysql, ...
 # http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
 # export PAGER=less
