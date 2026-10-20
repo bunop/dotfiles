@@ -2,9 +2,6 @@
 
 # for more info, visit:
 # https://medium.com/@cjus/handy-docker-aliases-4bd85089a3b8
-
-alias dm='docker-machine'
-alias dmx='docker-machine ssh'
 alias dk='docker'
 alias dki='docker images'
 alias dks='docker service'
@@ -22,7 +19,7 @@ alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'
 # adapted in order to have always dk for docker commands
 alias dkpsa="docker ps -a"
 alias dkpse="docker ps -a | awk 'BEGIN { FS = \"[ ][ ]+\" } {if (\$5 ~ /^Exited/) {print \$0}}'"
-alias dkpseid="dpse | cut -f1 --delim=\" \""
+alias dkpseid="dkpse | cut -f1 --delim=\" \""
 
 # when docker compose plugin is installed
 alias docker-compose="docker compose"
@@ -45,7 +42,7 @@ function dkgetipaddress() {
 # collect the volumes of a container
 # http://stackoverflow.com/questions/30133664/how-do-you-list-volumes-in-docker-containers
 function dkgetvolumes() {
-    ddocker inspect -f '{{ (index .Mounts 0).Source }}' $1
+    docker inspect -f '{{ (index .Mounts 0).Source }}' $1
 }
 
 # to collect labels

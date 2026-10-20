@@ -45,7 +45,8 @@ if [ -d "/opt/go" ] ; then
 fi
 
 # declare some useful stuff for singularity which can be used in nextflow
-export SINGULARITY_CACHEDIR=$HOME/.singularity
+export APPTAINER_CACHEDIR=$HOME/.apptainer
+export SINGULARITY_CACHEDIR=$APPTAINER_CACHEDIR
 export NXF_SINGULARITY_CACHEDIR="${HOME}/.nxf_singularity_cache"
 
 # moving RVM to a different location
@@ -60,3 +61,13 @@ fi
 if [ -d "${HOME}/Softwares/rvm/bin" ] ; then
     export PATH="${PATH}:$HOME/Softwares/rvm/bin"
 fi
+
+# >>> headroom persistent env >>>
+export HEADROOM_PORT="8787"
+export HEADROOM_HOST="127.0.0.1"
+export HEADROOM_MODE="cache"
+export HEADROOM_BACKEND="anthropic"
+export HEADROOM_TELEMETRY="off"
+export ANTHROPIC_BASE_URL="http://127.0.0.1:8787"
+export ENABLE_TOOL_SEARCH="true"
+# <<< headroom persistent env <<<
