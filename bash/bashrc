@@ -126,6 +126,11 @@ fi
 complete -cf sudo
 complete -cf man
 
+# Dedup ~/.bash_history at shell start (erasedups only works within one shell's memory)
+case "$-" in
+    *i*) [ -f ~/.bash_history ] && tac ~/.bash_history | awk '!x[$0]++' | tac >| ~/.bash_history.tmp && command mv -f ~/.bash_history.tmp ~/.bash_history ;;
+esac
+
 # set the default pager for terminal like psql, mysql, ...
 # http://merlinmoncure.blogspot.com/2007/10/better-psql-with-less.html
 # export PAGER=less
