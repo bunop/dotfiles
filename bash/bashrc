@@ -61,10 +61,19 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# Show the effective group in the prompt when it differs from the primary one (newgrp, sg).
+# PS1 only references ${__grp_tag}, so the "(env)" prefix added by conda/venv is left untouched.
+__primary_gid=$(id -g "$USER")
+__grp_prompt() {
+    __grp_tag=
+    [ "${GROUPS[0]}" != "$__primary_gid" ] && __grp_tag=" [$(id -gn)]"
+}
+PROMPT_COMMAND="__grp_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\[\033[01;31m\]${__grp_tag}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h${__grp_tag}:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
