@@ -1,8 +1,5 @@
 # ~/.bash_aliases: executed to load aliases from .bashrc
 
-# per i download di youtube
-alias youtube-dl='youtube-dl -f 18'
-
 ## Show hidden files only##
 alias l.='ls -d .* --color=auto'
 

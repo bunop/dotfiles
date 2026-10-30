@@ -15,8 +15,9 @@ Examples:
 - `bash/bashrc`    → `~/.bashrc`
 - `git/gitconfig`  → `~/.gitconfig`
 - `R/R/Makevars`   → `~/.R/Makevars`  *(nested path: module dir `R/`, subdir `R/`)*
+- `claude/claude/skills/<name>/SKILL.md`, `claude/claude/commands/<name>.md` → `~/.claude/skills/…`, `~/.claude/commands/…` *(only skills and commands are tracked, not settings or `CLAUDE.md`)*
 
-Current modules: `bash`, `git`, `R`, `tmux`, `vim`, `psql`, `screen`, `sqlite`.
+Current modules: `bash`, `git`, `R`, `tmux`, `vim`, `psql`, `screen`, `sqlite`, `claude`.
 
 ## Installation
 

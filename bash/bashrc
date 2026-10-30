@@ -91,45 +91,9 @@ fi
 complete -cf sudo
 complete -cf man
 
-# Enhance history cleanup by removing duplicates and commands matching $HISTIGNORE entries
-# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
-# remove duplicates while preserving input order
-function dedup {
-   #awk '! x[$0]++' $@
-   tac $@ | awk '! x[$0]++' | tac
-}
-
-# removes $HISTIGNORE commands from input
-function remove_histignore {
-   if [ -n "$HISTIGNORE" ]; then
-      # replace : with |, then * with .*
-      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
-      # negated grep removes matches
-      grep -vx "$IGNORE_PAT" $@
-   else
-      cat $@
-   fi
-}
-
-# clean up the history file by remove duplicates and commands matching
-# $HISTIGNORE entries
-function history_cleanup {
-   local HISTFILE_SRC=~/.bash_history
-   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
-   if [ -f $HISTFILE_SRC ]; then
-      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
-      # Remove trailing spaces at the end of the file
-      sed -i "s/ *$//" $HISTFILE_SRC
-      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
-      \mv $HISTFILE_DST $HISTFILE_SRC
-      chmod go-r $HISTFILE_SRC
-   fi
-}
-
-# Run bash history cleanup before bash loads it
-# Only for interactive shells (so qsub is not handled)
+# Dedup ~/.bash_history at shell start (erasedups only works within one shell's memory)
 case "$-" in
-    *i*) history_cleanup
+    *i*) [ -f ~/.bash_history ] && tac ~/.bash_history | awk '!x[$0]++' | tac >| ~/.bash_history.tmp && command mv -f ~/.bash_history.tmp ~/.bash_history ;;
 esac
 
 # set the default pager for terminal like psql, mysql, ...
@@ -190,3 +154,8 @@ else
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<
+
+# enabling terraform completion
+if command -v terraform &> /dev/null; then
+    complete -C "$(command -v terraform)" terraform
+fi
