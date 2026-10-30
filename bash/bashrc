@@ -43,6 +43,16 @@ shopt -s globstar
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Show the effective group in the prompt when it differs from the primary one (newgrp, sg).
+# Unlike master, PS1 comes from /etc/bashrc: only insert the tag before the closing "]".
+__primary_gid=$(id -g "$USER")
+__grp_prompt() {
+    __grp_tag=
+    [ "${GROUPS[0]}" != "$__primary_gid" ] && __grp_tag=" [$(id -gn)]"
+}
+PROMPT_COMMAND="__grp_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+PS1=${PS1/\\W]/\\W\$\{__grp_tag\}]}
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
