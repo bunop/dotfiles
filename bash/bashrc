@@ -61,10 +61,19 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# Show the effective group in the prompt when it differs from the primary one (newgrp, sg).
+# PS1 only references ${__grp_tag}, so the "(env)" prefix added by conda/venv is left untouched.
+__primary_gid=$(id -g "$USER")
+__grp_prompt() {
+    __grp_tag=
+    [ "${GROUPS[0]}" != "$__primary_gid" ] && __grp_tag=" [$(id -gn)]"
+}
+PROMPT_COMMAND="__grp_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\[\033[01;31m\]${__grp_tag}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h${__grp_tag}:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -126,45 +135,9 @@ fi
 complete -cf sudo
 complete -cf man
 
-# Enhance history cleanup by removing duplicates and commands matching $HISTIGNORE entries
-# http://stackoverflow.com/questions/338285/prevent-duplicates-from-being-saved-in-bash-history
-# remove duplicates while preserving input order
-function dedup {
-   #awk '! x[$0]++' $@
-   tac $@ | awk '! x[$0]++' | tac
-}
-
-# removes $HISTIGNORE commands from input
-function remove_histignore {
-   if [ -n "$HISTIGNORE" ]; then
-      # replace : with |, then * with .*
-      local IGNORE_PAT=`echo "$HISTIGNORE" | sed s/\:/\|/g | sed s/\*/\.\*/g`
-      # negated grep removes matches
-      grep -vx "$IGNORE_PAT" $@
-   else
-      cat $@
-   fi
-}
-
-# clean up the history file by remove duplicates and commands matching
-# $HISTIGNORE entries
-function history_cleanup {
-   local HISTFILE_SRC=~/.bash_history
-   local HISTFILE_DST=/tmp/.$USER.bash_history.clean
-   if [ -f $HISTFILE_SRC ]; then
-      \cp $HISTFILE_SRC $HISTFILE_SRC.backup
-      # Remove trailing spaces at the end of the file
-      sed -i "s/ *$//" $HISTFILE_SRC
-      dedup $HISTFILE_SRC | remove_histignore >| $HISTFILE_DST
-      \mv $HISTFILE_DST $HISTFILE_SRC
-      chmod go-r $HISTFILE_SRC
-   fi
-}
-
-# Run bash history cleanup before bash loads it
-# Only for interactive shells (so qsub is not handled)
+# Dedup ~/.bash_history at shell start (erasedups only works within one shell's memory)
 case "$-" in
-    *i*) history_cleanup
+    *i*) [ -f ~/.bash_history ] && tac ~/.bash_history | awk '!x[$0]++' | tac >| ~/.bash_history.tmp && command mv -f ~/.bash_history.tmp ~/.bash_history ;;
 esac
 
 # set the default pager for terminal like psql, mysql, ...
